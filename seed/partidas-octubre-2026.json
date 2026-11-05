@@ -1,0 +1,2803 @@
+[
+ {
+  "id": "oct0",
+  "example": true,
+  "date": "2026-11-01",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Meatgrinder",
+    "rounds": [
+     3,
+     4,
+     12,
+     12,
+     9
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      3,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      0,
+      2,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      0,
+      0,
+      2,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      3
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Angel",
+   "army": "Orks",
+   "detachment": "",
+   "primary": {
+    "name": "Meatgrinder",
+    "rounds": [
+     0,
+     12,
+     7,
+     3,
+     9
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Assassination",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      0,
+      0,
+      2,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      3,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      3,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      2
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct1",
+  "example": true,
+  "date": "2026-11-01",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Destroyer's Wrath",
+    "rounds": [
+     0,
+     11,
+     7,
+     11,
+     13
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      4,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      0,
+      2,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Assassination",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Enrique",
+   "army": "Salamanders",
+   "detachment": "",
+   "primary": {
+    "name": "Vital Link",
+    "rounds": [
+     3,
+     12,
+     9,
+     14,
+     6
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      3,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Assassination",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct2",
+  "example": true,
+  "date": "2026-10-31",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Destroyer's Wrath",
+    "rounds": [
+     3,
+     11,
+     11,
+     15,
+     10
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Display of Might",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      4,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Jordi",
+   "army": "Dark Angels",
+   "detachment": "",
+   "primary": {
+    "name": "Vital Link",
+    "rounds": [
+     3,
+     12,
+     6,
+     0,
+     0
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      3,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      0,
+      3,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      3,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Assassination",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct3",
+  "example": true,
+  "date": "2026-10-31",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Meatgrinder",
+    "rounds": [
+     0,
+     7,
+     7,
+     0,
+     4
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      0,
+      2,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      4,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      4,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      0,
+      0,
+      3,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Pablo",
+   "army": "Imperial Knights",
+   "detachment": "",
+   "primary": {
+    "name": "Meatgrinder",
+    "rounds": [
+     0,
+     13,
+     7,
+     12,
+     12
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Assassination",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      0,
+      0,
+      2,
+      0
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      4
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct4",
+  "example": true,
+  "date": "2026-10-30",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Consecrate",
+    "rounds": [
+     0,
+     3,
+     3,
+     6,
+     19
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      2,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      2,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Alvaro",
+   "army": "Drukhari",
+   "detachment": "",
+   "primary": {
+    "name": "Triangulation",
+    "rounds": [
+     0,
+     7,
+     10,
+     14,
+     24
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Display of Might",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct5",
+  "example": true,
+  "date": "2026-10-30",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Meatgrinder",
+    "rounds": [
+     3,
+     3,
+     3,
+     12,
+     15
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      2,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Assassination",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Grievous Blow",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      0,
+      0,
+      2,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      2
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Victor",
+   "army": "World Eaters",
+   "detachment": "",
+   "primary": {
+    "name": "Meatgrinder",
+    "rounds": [
+     3,
+     0,
+     7,
+     0,
+     0
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct6",
+  "example": true,
+  "date": "2026-10-25",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Punishment",
+    "rounds": [
+     5,
+     9,
+     14,
+     9,
+     22
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      0,
+      2,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      3,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Alex",
+   "army": "Death Guard",
+   "detachment": "",
+   "primary": {
+    "name": "Delaying Action",
+    "rounds": [
+     0,
+     7,
+     8,
+     4,
+     9
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      3,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      3,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      0,
+      3,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      2
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct7",
+  "example": true,
+  "date": "2026-10-25",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Punishment",
+    "rounds": [
+     0,
+     9,
+     9,
+     9,
+     17
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Centre Ground",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Iñigo",
+   "army": "Adeptus Custodes",
+   "detachment": "",
+   "primary": {
+    "name": "Delaying Action",
+    "rounds": [
+     0,
+     11,
+     6,
+     9,
+     0
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      3,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      3,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      2,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      0,
+      0,
+      2,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct8",
+  "example": true,
+  "date": "2026-10-25",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Punishment",
+    "rounds": [
+     0,
+     5,
+     5,
+     5,
+     0
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      4,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      3,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      2,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Joan",
+   "army": "T'au Empire",
+   "detachment": "",
+   "primary": {
+    "name": "Delaying Action",
+    "rounds": [
+     0,
+     9,
+     15,
+     13,
+     9
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      3,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct9",
+  "example": true,
+  "date": "2026-10-12",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Inescapable Dominion",
+    "rounds": [
+     4,
+     0,
+     0,
+     9,
+     0
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Assassination",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      0,
+      3,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      4,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Jose",
+   "army": "Adeptus Custodes",
+   "detachment": "",
+   "primary": {
+    "name": "Secure Asset",
+    "rounds": [
+     4,
+     14,
+     8,
+     10,
+     0
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Cleanse",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Defend Stronghold",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Burden of Trust",
+     "rounds": [
+      0,
+      0,
+      2,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ },
+ {
+  "id": "oct10",
+  "example": true,
+  "date": "2026-10-09",
+  "type": "",
+  "event": "",
+  "layout": "",
+  "first": null,
+  "me": {
+   "name": "Miquel",
+   "army": "Orks",
+   "detachment": "Blitz Brigade + Bully Boyz + Wreckas",
+   "primary": {
+    "name": "Punishment",
+    "rounds": [
+     0,
+     9,
+     14,
+     9,
+     22
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Overwhelming Force",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      3,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "No Prisoners",
+     "rounds": [
+      0,
+      5,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Assassination",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      5
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "opp": {
+   "name": "Pau",
+   "army": "Tyranids",
+   "detachment": "",
+   "primary": {
+    "name": "Delaying Action",
+    "rounds": [
+     0,
+     8,
+     5,
+     6,
+     4
+    ]
+   },
+   "secondaries": [
+    {
+     "name": "Engage On All Fronts",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Cleanse",
+     "rounds": [
+      5,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Behind Enemy Lines",
+     "rounds": [
+      0,
+      3,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Plunder",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Secure No Man's Land",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Bring It Down",
+     "rounds": [
+      0,
+      0,
+      5,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Forward Position",
+     "rounds": [
+      0,
+      0,
+      0,
+      5,
+      0
+     ]
+    },
+    {
+     "name": "Beacon",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Display of Might",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "A Tempting Target",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "Outflank",
+     "rounds": [
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "cp": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "painted": 10
+  },
+  "notes": "",
+  "source": "video"
+ }
+]
