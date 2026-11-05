@@ -1255,6 +1255,7 @@ function fromReader(r){
     if(S.secondaries.some(x => x.unknownName)) warn.push(`hay alguna secundaria ${who === "tus" ? "tuya" : "del rival"} con el nombre mal leído`);
     if(S.primary.unknown || S.secondaries.some(x => x.unknown)) warn.push(`hay alguna casilla ${who === "tus" ? "tuya" : "del rival"} que no he podido leer`);
   }
+  if(!g.date) warn.push("no he podido leer la fecha: pon la de la partida");
   if(r.title){
     if(total(g.me) !== r.title.me) warn.push(`tu total da ${total(g.me)} y la captura dice ${r.title.me}`);
     if(total(g.opp) !== r.title.opp) warn.push(`el total del rival da ${total(g.opp)} y la captura dice ${r.title.opp}`);

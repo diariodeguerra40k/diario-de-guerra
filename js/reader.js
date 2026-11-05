@@ -386,6 +386,12 @@
     const p = bestMatch(label, PRIMS); if (p) return { type: "primary", name: p.name };
     const s = bestMatch(label, SECS); if (s) return { type: "secondary", name: s.name };
     const lp = looseMatch(label, PRIMS); if (lp) return { type: "primary", name: lp };
+    // solo la 2ª línea de una etiqueta partida ("All Fronts", "Man's Land", "Dominion")
+    const tl = norm(label);
+    if (tl.length >= 5) {
+      const pe = PRIMS.find(n => norm(n).endsWith(" " + tl)); if (pe) return { type: "primary", name: pe };
+      const se = SECS.find(n => norm(n).endsWith(" " + tl)); if (se) return { type: "secondary", name: se };
+    }
     const ls = looseMatch(label, SECS); if (ls) return { type: "secondary", name: ls };
     const letters = (label.match(/[a-z]{3,}/gi) || []).join("");
     if (letters.length >= 6 && values && values.some(v => v)) return { type: "secondary", name: label.trim(), unknownName: true };
@@ -445,7 +451,12 @@
       const pv = S.primObs.length ? voteVals(S.primObs) : [0, 0, 0, 0, 0];
       const out = {
         primary: { name: S.prim || "", rounds: pv.map(v => v || 0), unknown: pv.some(v => v == null) },
-        secondaries: [...S.secs.entries()].map(([name, o]) => { const v = voteVals(o.obs); return { name, rounds: v.map(x => x || 0), unknown: v.some(x => x == null), unknownName: o.unknownName }; }),
+        secondaries: [...S.secs.entries()].filter(([name, o]) => {
+          if (!o.unknownName) return true;
+          if (shots.length > 2 && o.obs.length < 2) return false;           // en vídeo: visto una sola vez, ruido
+          const v = voteVals(o.obs).join(",");
+          return ![...S.secs.entries()].some(([n2, o2]) => !o2.unknownName && voteVals(o2.obs).join(",") === v); // copia borrosa de otra fila
+        }).map(([name, o]) => { const v = voteVals(o.obs); return { name, rounds: v.map(x => x || 0), unknown: v.some(x => x == null), unknownName: o.unknownName }; }),
         cp: S.cpObs.length ? voteVals(S.cpObs).map(v => v || 0) : [0, 0, 0, 0, 0],
         painted: S.totals.painted != null ? S.totals.painted : null,
         totals: S.totals
