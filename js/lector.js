@@ -117,7 +117,7 @@
   }
 
   /* ---------- vídeo: fotogramas → partidas ---------- */
-  async function videoFrames(file, onProg, onFrame) {
+  async function videoFrames(file, onProg, onFrame, onPause) {
     const url = URL.createObjectURL(file), v = document.createElement("video");
     v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = url;
     await new Promise((ok, ko) => { v.onloadeddata = ok; v.onerror = () => ko(new Error("video")); setTimeout(() => ko(new Error("video")), 20000); });
@@ -128,7 +128,13 @@
     const tx = t.getContext("2d", { willReadFrequently: true });
     let prev = null;
     for (let ts = 0.1; ts < dur; ts += step) {
-      v.currentTime = ts; await new Promise(r => { v.onseeked = r; setTimeout(r, 3000); });
+      // si la pestaña está en segundo plano el navegador frena el vídeo: esperar a que vuelva
+      if (document.hidden) { onPause && onPause(true); await new Promise(r => { const f = () => { if (!document.hidden) { document.removeEventListener("visibilitychange", f); r(); } }; document.addEventListener("visibilitychange", f); }); onPause && onPause(false); }
+      let okSeek = false;
+      for (let tries = 0; tries < 3 && !okSeek; tries++) {
+        okSeek = await new Promise(r => { const t = setTimeout(() => r(false), 4000); v.onseeked = () => { clearTimeout(t); r(true); }; v.currentTime = ts; });
+      }
+      if (!okSeek) continue;
       tx.drawImage(v, 0, 0, 24, 48); const d = tx.getImageData(0, 0, 24, 48).data, g = [];
       for (let i = 0; i < d.length; i += 4) g.push(d[i] + d[i + 1] + d[i + 2]);
       if (prev) { let diff = 0; for (let i = 0; i < g.length; i++) diff += Math.abs(g[i] - prev[i]); if (diff / g.length < 18) continue; }
@@ -149,6 +155,7 @@
     const groups = new Map(); // "88-82" -> {shots, imgs, arm, frame, g}
     let pct = 0, curKey = null;
     const finalize = async G => { if (!G || G.g) return; G.g = await WJReader.repair(G.shots, null, ocr); G.shots.forEach(x => { x.img = null; }); };
+    const paused = on => { if (on && onStatus) onStatus("En pausa: vuelve a esta pestaña para que siga leyendo el vídeo."); };
     await videoFrames(file, p => { pct = Math.round(p * 100); }, async img => {
       onStatus && onStatus(`Leyendo el vídeo… ${pct}%` + (groups.size ? ` · ${groups.size} partida${groups.size > 1 ? "s" : ""} encontrada${groups.size > 1 ? "s" : ""}` : ""));
       if (!WJReader.layout(img)) return; // solo pantallas Results
@@ -164,7 +171,23 @@
       G.shots.push({ items: r.items, img });
       if (!G.arm) { const a = await armiesFromCard(img, learned).catch(() => null); if (a) { G.arm = a; G.frame = await imgToBlob(img); } }
       if (!G.frame) G.frame = await imgToBlob(img);
-    });
+    }, paused);
+    // títulos mal leídos ("87-43" en vez de "87-45"): unir grupos pequeños con otro que comparta filas
+    const rk = it => (it.label || "").toLowerCase().replace(/[^a-z]/g, "") + "|" + (it.values || []).join(",");
+    const keysOf = G => new Set(G.shots.flatMap(x => x.items.filter(i => i.kind === "row" && (i.values || []).some(v => v)).map(rk)));
+    for (const [k, G] of [...groups.entries()].sort((a, b) => a[1].shots.length - b[1].shots.length)) {
+      const [a, b] = k.split("-").map(Number), mine = keysOf(G);
+      let best = null, bs = 0;
+      for (const [k2, H] of groups) {
+        if (k2 === k || H.shots.length <= G.shots.length) continue;
+        const [c, d] = k2.split("-").map(Number);
+        const oneDigit = (x, y) => { const X = String(x), Y = String(y); return X.length === Y.length && [...X].filter((ch, i) => ch !== Y[i]).length === 1; };
+        if (!((a === c && oneDigit(b, d)) || (b === d && oneDigit(a, c)))) continue;
+        const other = keysOf(H); let n = 0; mine.forEach(x => { if (other.has(x)) n++; });
+        if (n > bs) { bs = n; best = H; }
+      }
+      if (best && bs >= 2) { best.shots.push(...G.shots); best.g = null; if (!best.arm) { best.arm = G.arm; best.frame = best.frame || G.frame; } groups.delete(k); }
+    }
     const out = [];
     for (const G of groups.values()) {
       if (!G.g) await finalize(G);
