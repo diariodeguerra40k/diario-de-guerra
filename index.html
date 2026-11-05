@@ -1249,9 +1249,9 @@ function fromReader(r){
   }
   // comprobaciones con los totales de la propia captura
   for(const k of ["me","opp"]){
-    const S = r[k], who = k === "me" ? "tus" : "del rival";
-    if(S.check.primary === false) warn.push(`la primaria ${who} no suma lo que pone (${S.totals.primary})`);
-    if(S.check.secondary === false) warn.push(`las secundarias ${who} no suman lo que pone (${S.totals.secondary})`);
+    const S = r[k], who = k === "me" ? "tus" : "del rival", me = k === "me";
+    if(S.check.primary === false) warn.push(`${me ? "tu primaria" : "la primaria del rival"} no suma lo que pone (${S.totals.primary})`);
+    if(S.check.secondary === false) warn.push(`${me ? "tus secundarias" : "las secundarias del rival"} no suman lo que pone (${S.totals.secondary})`);
     if(S.secondaries.some(x => x.unknownName)) warn.push(`hay alguna secundaria ${who === "tus" ? "tuya" : "del rival"} con el nombre mal leído`);
     if(S.primary.unknown || S.secondaries.some(x => x.unknown)) warn.push(`hay alguna casilla ${who === "tus" ? "tuya" : "del rival"} que no he podido leer`);
   }
