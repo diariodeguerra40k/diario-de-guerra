@@ -23,3 +23,7 @@ body.gated{overflow:hidden}
 .arm-sug{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center;font-size:13px}
 .arm-sug button{padding:5px 10px;font-size:12px;border-width:1.5px;border-radius:999px;text-transform:none;letter-spacing:.02em;clip-path:none}
 #storageNote .ghost{margin-left:auto}
+/* botón de destacamentos en el formulario */
+.form-det{font:inherit;font-family:var(--f-body);font-size:16px;text-transform:none;letter-spacing:0;font-weight:500;text-align:left;width:100%;min-height:46px;padding:10px 12px;border:1.5px dashed var(--rule);border-radius:10px;background:var(--sheet);color:var(--ink);clip-path:none;box-shadow:none;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.form-det:hover{border-style:solid;border-color:var(--muted);background:var(--sheet)}
+.form-det .det-pts{flex:none}

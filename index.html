@@ -667,7 +667,7 @@ html[data-mode="dark"] .panel th{color:#e3e6ea;background:color-mix(in srgb,var(
               <div class="form-grid">
                 <div class="field"><label for="meName">Nombre</label><input id="meName"></div>
                 <div class="field"><label for="meArmy">Ejército</label><input id="meArmy" list="armies" required placeholder="Elige o escribe"></div>
-                <div class="field"><label for="meDet">Destacamento</label><input id="meDet" placeholder="Opcional"></div>
+                <div class="field"><label for="meDetBtn">Destacamentos</label><input type="hidden" id="meDet"><button type="button" class="det-btn form-det" id="meDetBtn" data-form="me" aria-haspopup="true">Elegir…</button></div>
               </div>
               <div class="scroll"><table class="rounds" id="meRounds"></table></div>
               <button type="button" class="ghost" data-addsec="me">+ Añadir secundaria</button>
@@ -676,7 +676,7 @@ html[data-mode="dark"] .panel th{color:#e3e6ea;background:color-mix(in srgb,var(
               <div class="form-grid">
                 <div class="field"><label for="oppName">Nombre</label><input id="oppName" list="rivals"></div>
                 <div class="field"><label for="oppArmy">Ejército</label><input id="oppArmy" list="armies" required placeholder="Elige o escribe"></div>
-                <div class="field"><label for="oppDet">Destacamento</label><input id="oppDet" placeholder="Opcional"></div>
+                <div class="field"><label for="oppDetBtn">Destacamentos</label><input type="hidden" id="oppDet"><button type="button" class="det-btn form-det" id="oppDetBtn" data-form="opp" aria-haspopup="true">Elegir…</button></div>
               </div>
               <div class="scroll"><table class="rounds" id="oppRounds"></table></div>
               <button type="button" class="ghost" data-addsec="opp">+ Añadir secundaria</button>
@@ -1108,6 +1108,18 @@ function detCell(g,k){
   const used=list.reduce((a,n)=>a+detCost(side.army,n),0);
   return `<button type="button" class="det-btn ${cls}" data-gid="${esc(g.id)}" data-k="${k}" aria-haspopup="true">${list.length?txt:"Elegir…"} <span class="det-pts">${used}/${DET_BUDGET}</span></button>`;
 }
+const ARMY_MATCH = v => ARMIES.find(a => a.toLowerCase() === String(v||"").trim().toLowerCase()) || String(v||"").trim();
+function refreshFormDet(){
+  for(const k of ["me","opp"]){ const b = $("#"+k+"DetBtn"); if(!b) continue;
+    const army = ARMY_MATCH($("#"+k+"Army").value), all = DETACHMENTS[army] || [];
+    const list = detList({ detachment: $("#"+k+"Det").value }).filter(n => all.some(d => d[0] === n));
+    if(all.length && list.join(" + ") !== $("#"+k+"Det").value){ $("#"+k+"Det").value = list.join(" + "); if(draft) draft[k].detachment = $("#"+k+"Det").value; }
+    const used = list.reduce((a,n)=>a+detCost(army,n),0);
+    b.innerHTML = !all.length ? `<span class="muted">${army ? "Sin lista para este ejército" : "Elige antes el ejército"}</span>` : (list.length ? esc(list.join(" + ")) : "Elegir…") + ` <span class="det-pts">${used}/${DET_BUDGET}</span>`;
+  }
+}
+document.addEventListener("click", e => { const b = e.target.closest(".form-det"); if(b){ e.stopPropagation(); openDetPop(b); } });
+document.addEventListener("input", e => { if(e.target.id === "meArmy" || e.target.id === "oppArmy") refreshFormDet(); });
 function renderHistory(){
   const q = $("#search").value.trim().toLowerCase();
   const list = games.filter(g => !q || [g.opp.name,g.opp.army,g.me.army,g.me.primary?.name,layoutName(g),g.event,g.notes].join(" ").toLowerCase().includes(q));
@@ -1128,9 +1140,10 @@ let detPop = null;
 function closeDetPop(){ if(detPop){ const f = detPop._commit; detPop.remove(); detPop = null; if(f) f(); } }
 function openDetPop(btn){
   closeDetPop();
-  const id = btn.dataset.gid, k = btn.dataset.k, g = games.find(x => x.id === id); if(!g) return;
-  const army = g[k].army, all = DETACHMENTS[army] || [];
-  let sel = detList(g[k]).filter(n => all.some(d => d[0] === n));
+  const form = btn.dataset.form, id = btn.dataset.gid, k = form || btn.dataset.k, g = form ? null : games.find(x => x.id === id); if(!form && !g) return;
+  const army = form ? ARMY_MATCH($("#"+k+"Army").value) : g[k].army, all = DETACHMENTS[army] || [];
+  if(form && !all.length){ toast(army ? "No tengo destacamentos para ese ejército" : "Elige primero el ejército"); return; }
+  let sel = detList(form ? { detachment: $("#"+k+"Det").value } : g[k]).filter(n => all.some(d => d[0] === n));
   detPop = document.createElement("div"); detPop.className = "det-pop"; detPop.setAttribute("role","dialog");
   const draw = () => {
     const used = sel.reduce((a,n)=>a+detCost(army,n),0), left = DET_BUDGET - used;
@@ -1141,7 +1154,9 @@ function openDetPop(btn){
   };
   const before = sel.join(" + ");
   draw(); document.body.appendChild(detPop);
-  detPop._commit = () => { const v = sel.join(" + "); if(v !== before) editGame(id, x => { x[k].detachment = v; }, "Destacamentos guardados"); };
+  detPop._commit = () => { const v = sel.join(" + "); if(v === before) return;
+    if(form){ $("#"+k+"Det").value = v; if(draft) draft[k].detachment = v; refreshFormDet(); }
+    else editGame(id, x => { x[k].detachment = v; }, "Destacamentos guardados"); };
   const r = btn.getBoundingClientRect(), w = detPop.offsetWidth;
   detPop.style.top = (window.scrollY + r.bottom + 6) + "px";
   detPop.style.left = Math.max(8, Math.min(window.scrollX + r.left, window.scrollX + document.documentElement.clientWidth - w - 8)) + "px";
@@ -1349,7 +1364,7 @@ function startReview(g, msg){
   for(const k of ["me","opp"]){ $("#"+k+"Name").value = draft[k].name; $("#"+k+"Army").value = draft[k].army; $("#"+k+"Det").value = draft[k].detachment; renderRoundsForm(k); }
   $("#preview").src = draftImg || ""; $("#preview").hidden = !draftImg; $("#readBy").textContent = draftImg ? "Captura original" : "";
   $("#reviewMsg").textContent = msg || "Revisa los datos y completa lo que falte.";
-  setStep(2); window.scrollTo({top:0}); renderArmySug();
+  setStep(2); window.scrollTo({top:0}); renderArmySug(); refreshFormDet();
 }
 function renderRoundsForm(k){
   const s = draft[k];

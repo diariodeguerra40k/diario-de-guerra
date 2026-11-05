@@ -78,6 +78,8 @@ rep('  setStep(2); window.scrollTo({top:0});\n}', '  setStep(2); window.scrollTo
 
 rep('const MISSIONS = CAT_ORDER.flatMap(a=>MATRIX[a]);', 'const MISSIONS = CAT_ORDER.flatMap(a=>MATRIX[a]);\nif(window.WJReader) WJReader.setPrimaries(MISSIONS);')
 
+exec(open(sys.path[0] + '/patch_det.py', encoding='utf-8').read())
+
 # ---------- scripts externos (antes del script principal) ----------
 rep('<datalist id="armies"></datalist>',
     '<script src="vendor/supabase.js"></script>\n<script src="vendor/tesseract/tesseract.min.js"></script>\n'
