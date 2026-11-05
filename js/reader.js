@@ -26,7 +26,7 @@
     return { width: w, height: h, data: out };
   }
   // escala (bilineal) + gris + umbral: texto negro sobre blanco, con margen
-  function prep(im, scale, pad, thr) {
+  function prep(im, scale, pad, thr, inv) {
     const W = Math.round(im.width * scale), H = Math.round(im.height * scale);
     const OW = W + pad * 2, OH = H + pad * 2;
     const out = new Uint8ClampedArray(OW * OH * 4).fill(255);
@@ -35,7 +35,8 @@
       const x0 = Math.max(0, Math.floor(sx)), y0 = Math.max(0, Math.floor(sy)), fx = Math.max(0, sx - x0), fy = Math.max(0, sy - y0);
       const L = (xx, yy) => { const [r, g, b] = px(im, xx, yy); return lum(r, g, b); };
       const v = L(x0, y0) * (1 - fx) * (1 - fy) + L(x0 + 1, y0) * fx * (1 - fy) + L(x0, y0 + 1) * (1 - fx) * fy + L(x0 + 1, y0 + 1) * fx * fy;
-      const c = thr ? (v < thr ? 0 : 255) : v;
+      const vv = inv ? 255 - v : v;
+      const c = thr ? (vv < thr ? 0 : 255) : vv;
       const o = ((y + pad) * OW + x + pad) * 4;
       out[o] = out[o + 1] = out[o + 2] = c; out[o + 3] = 255;
     }
@@ -64,10 +65,20 @@
     }
     const maxB = Math.max(...boxCol);
     let cols = runs(boxCol, v => v > maxB * 0.25, Math.max(4, W * 0.04));
-    if (cols.length > 3) { // quedarse con las 3 más anchas y ordenarlas
+    let five = null;
+    if (cols.length >= 5) { // casillas de color en las 5 columnas
+      const c5 = cols.sort((a, b) => (b[1] - b[0]) - (a[1] - a[0])).slice(0, 5).sort((a, b) => a[0] - b[0]);
+      const ws = c5.map(c => c[1] - c[0]);
+      if (Math.max(...ws) < Math.min(...ws) * 1.6) five = c5;
+    }
+    if (five) cols = [five[0], five[2], five[4]];
+    else if (cols.length > 3) { // quedarse con las 3 más anchas y ordenarlas
       cols = cols.sort((a, b) => (b[1] - b[0]) - (a[1] - a[0])).slice(0, 3).sort((a, b) => a[0] - b[0]);
     }
     if (cols.length !== 3) return null;
+    // las 3 columnas deben estar igual de separadas (1ª, 3ª y 5ª)
+    { const m = cols.map(c => (c[0] + c[1]) / 2), d1 = m[1] - m[0], d2 = m[2] - m[1];
+      if (Math.abs(d1 - d2) > Math.max(d1, d2) * 0.25) return null; }
     const bw = Math.round(((cols[0][1] - cols[0][0]) + (cols[1][1] - cols[1][0]) + (cols[2][1] - cols[2][0])) / 3);
     const c1 = (cols[0][0] + cols[0][1]) / 2, c3 = (cols[1][0] + cols[1][1]) / 2, c5 = (cols[2][0] + cols[2][1]) / 2;
     const centers = [c1, (c1 + c3) / 2, c3, (c3 + c5) / 2, c5];
@@ -125,15 +136,21 @@
   }
 
   // lee los dígitos de una casilla a partir del recuadro de tinta; prueba varios ajustes
-  async function readDigits(im, box, ocr) {
-    const [a, b, c, d] = box, dh = d - b + 1, pad = Math.max(3, Math.round(dh * 0.5));
+  const expLen = box => { const w = box[2] - box[0] + 1, h = box[3] - box[1] + 1; return w / h > 1.1 ? 2 : 1; };
+  async function readDigits(im, box, ocr, full) {
+    const [a, b, c, d] = box, dh = d - b + 1, pad = Math.max(3, Math.round(dh * 0.5)), want = expLen(box);
     const cimg = crop(im, a - pad, b - pad, c - a + 1 + pad * 2, dh + pad * 2);
-    const tries = [[40, 160, 7], [32, 185, 7], [48, 150, 10], [40, 0, 8], [56, 170, 7]];
+    const tries = [[40, 160, 7], [32, 185, 7], [48, 150, 10], [40, 0, 8], [56, 170, 7], [36, 140, 13]];
     const votes = {};
-    for (const [H, thr, psm] of tries) {
+    for (let i = 0; i < tries.length; i++) {
+      const [H, thr, psm] = tries[i];
       const t = await ocr(prep(cimg, H / dh, 20, thr), { psm, whitelist: "0123456789" });
       const txt = (t.text || "").replace(/\D/g, "");
-      if (txt && txt.length <= 2) { votes[txt] = (votes[txt] || 0) + 1; if (votes[txt] >= 2 || Object.keys(votes).length === 1 && tries.indexOf(tries.find(q => q[0] === H && q[1] === thr)) === 0) { if (votes[txt] >= 1 && tries[0][0] === H && tries[0][1] === thr) continue; return txt; } }
+      if (txt && txt.length === want) {
+        votes[txt] = (votes[txt] || 0) + 1;
+        if (!full && votes[txt] >= 2) return txt;
+        if (full && votes[txt] >= 3) return txt;
+      }
     }
     const best = Object.entries(votes).sort((p, q) => q[1] - p[1])[0];
     return best ? best[0] : "";
@@ -180,6 +197,62 @@
     return bd <= Math.max(2, Math.round(norm(best).length * 0.3)) ? { name: best, dist: bd } : null;
   }
 
+
+  // ---------- tarjeta de arriba (ilustraciones, fecha, nombres) ----------
+  function findCard(img) {
+    const { width: W, height: H, data } = img;
+    const L = (x, y) => { const k = (y * W + x) * 4; return 0.299 * data[k] + 0.587 * data[k + 1] + 0.114 * data[k + 2]; };
+    let top = 0;
+    for (let y = 0; y < H * 0.25; y++) {
+      let n = 0, t = 0; for (let x = 0; x < W; x += 4) { t++; const k = (y * W + x) * 4; if (data[k] > 190 && data[k + 1] > 140 && data[k + 2] < 90) n++; }
+      if (n > t * 0.6) top = y + 1;
+    }
+    const xl = Math.round(W * 0.05), xr = Math.round(W * 0.95), cw = xr - xl;
+    const mean = (y, a, b) => { let s = 0, n = 0; for (let x = a; x < b; x += 2) { s += L(x, y); n++; } return s / n; };
+    const ok = [];
+    for (let y = 0; y < H; y++) {
+      if (y <= top || y > H * 0.6) { ok.push(false); continue; }
+      const ls = mean(y, xl + cw * 0.02 | 0, xl + cw * 0.18 | 0), rs = mean(y, xr - cw * 0.18 | 0, xr - cw * 0.02 | 0);
+      const mids = []; for (let x = xl + cw * 0.42 | 0; x < xl + cw * 0.58; x += 2) mids.push(L(x, y)); mids.sort((a, b) => a - b);
+      ok.push(ls > 18 && rs > 18 && mids[mids.length >> 1] < 80);
+    }
+    let best = [0, 0, 0], s = -1;
+    for (let y = 0; y <= H; y++) {
+      const v = y < H && ok[y];
+      if (v && s < 0) s = y;
+      if (!v && s >= 0) { if (y - s > best[0]) best = [y - s, s, y - 1]; s = -1; }
+    }
+    if (best[0] < H * 0.05) return null;
+    const [, y0, y1] = best;
+    if ((y1 - y0) > W * 0.45) return null; // demasiado alta: no es la tarjeta
+    let x0 = 0, x1 = W - 1;
+    const colMean = x => { let t = 0, n = 0; for (let y = y0; y <= y1; y += 2) { t += L(x, y); n++; } return t / n; };
+    while (x0 < W / 3 && colMean(x0) <= 30) x0++;
+    while (x1 > W * 2 / 3 && colMean(x1) <= 30) x1--;
+    return { x0, y0, x1, y1 };
+  }
+  async function readCard(im, ocr, card) {
+    const w = card.x1 - card.x0, h = card.y1 - card.y0, out = {};
+    // fecha: centro, tercio superior (texto claro sobre fondo oscuro)
+    const dc = crop(im, card.x0 + w * 0.3, Math.max(0, card.y0 - h * 0.12), w * 0.4, h * 0.32);
+    const sc = 50 / dc.height;
+    for (const thr of [0, 170, 140]) {
+      const t = await ocr(prep(dc, sc, 20, thr, true), { psm: 7, whitelist: "0123456789/" });
+      const m = (t.text || "").match(/(\d{1,2})\/(\d{1,2})\/(20\d\d)/);
+      if (m) { out.date = { d: +m[1], m: +m[2], yy: +m[3] }; break; }
+    }
+    // nombres: debajo de los puntos
+    for (const [k, fx] of [["me", 0.22], ["opp", 0.53]]) {
+      const nc = crop(im, card.x0 + w * fx, card.y0 + h * 0.66, w * 0.25, h * 0.26);
+      for (const thr of [0, 120]) {
+        const t = await ocr(prep(nc, 44 / nc.height, 16, thr, true), { psm: 7 });
+        const m = (t.text || "").match(/[A-ZÀ-Ý][a-zà-ÿñ]+(?: [A-ZÀ-Ý][a-zà-ÿñ]+)?/);
+        if (m) { out[k + "Name"] = m[0]; break; }
+      }
+    }
+    return out;
+  }
+
   // ---------- leer una captura ----------
   // Devuelve una lista ordenada de piezas: header/band/row/eob/title/card
   async function readShot(im, ocr, opts) {
@@ -190,12 +263,13 @@
     const scale = Math.max(1, Math.min(4, 1400 / im.width));
 
     // 1) OCR general de toda la imagen (etiquetas, bandas, cabeceras, título)
-    const big = prep(im, scale, 0, 0);
-    const full = await ocr(big, { psm: 11 });
-    const lines = (full.lines || []).map(l => ({
-      text: l.text.trim(),
-      x0: l.bbox.x0 / scale, x1: l.bbox.x1 / scale, y0: l.bbox.y0 / scale, y1: l.bbox.y1 / scale
-    })).filter(l => l.text);
+    // OCR de la columna de etiquetas (a la izquierda de las casillas) y de la franja del título
+    const colW = Math.min(im.width, Math.round(centers[0] - bw * 0.5));
+    const titleH = Math.round(im.height * 0.14);
+    const lines = [];
+    const addLines = (res, ox, oy) => { for (const l of res.lines || []) { const t = l.text.trim(); if (t) lines.push({ text: t, x0: ox + l.bbox.x0 / scale, x1: ox + l.bbox.x1 / scale, y0: oy + l.bbox.y0 / scale, y1: oy + l.bbox.y1 / scale }); } };
+    addLines(await ocr(prep(crop(im, 0, titleH, colW, im.height - titleH), scale, 0, 0), { psm: 11 }), 0, titleH);
+    addLines(await ocr(prep(crop(im, 0, 0, im.width, titleH), scale, 0, 0), { psm: 11 }), 0, 0);
     const labelEdge = centers[0] - bw * 0.6;
     const items = [];
 
@@ -212,9 +286,15 @@
       let type = /prim/i.test(txt) ? "primary" : /secon|second/i.test(txt) ? "secondary" : /paint|ready|battle/i.test(txt) ? "painted" : null;
       // valor de la derecha: OCR dedicado con números
       const vx = left + (right - left) * 0.72, vw = right - vx - 4;
-      const v = await ocr(prep(crop(im, vx, b.y0, vw, b.y1 - b.y0 + 1), Math.max(2, 60 / (b.y1 - b.y0)), 10, 0), { psm: 7, whitelist: "0123456789/" });
-      let m = (v.text || "").match(/(\d{1,2})\s*\/\s*(\d{2})/);
-      if (!m) { const d = (v.text || "").replace(/\D/g, ""); const mm = d.match(/^(\d{1,2})(45|10)$/) || d.match(/^(\d{1,2})[17](45|10)$/); if (mm) m = mm; }
+      let m = null;
+      const bc = crop(im, vx, b.y0, vw, b.y1 - b.y0 + 1);
+      for (const thr of [130, 0, 100, 160]) {
+        const v = await ocr(prep(bc, Math.max(2, 60 / (b.y1 - b.y0)), 10, thr), { psm: 7, whitelist: "0123456789/" });
+        m = (v.text || "").match(/(\d{1,2})\s*\/\s*(\d{2})/);
+        if (!m) { const d = (v.text || "").replace(/\D/g, ""); m = d.match(/^(\d{1,2})(45|10)$/) || d.match(/^(\d{1,2})[17](45|10)$/); }
+        if (m && +m[1] <= +m[2] && (+m[2] === 45 || +m[2] === 10)) break;
+        m = null;
+      }
       items.push({ kind: "band", type, value: m ? +m[1] : null, max: m ? +m[2] : null, y: b.y0, y1: b.y1, raw: txt });
     }
 
@@ -251,14 +331,14 @@
         if (ib.kind !== "digits") { vals.push(ib.kind === "dash" ? 0 : null); raw.push(ib.kind); continue; }
         vals.push(null); raw.push("?"); pend.push({ ri: rowItems.length, c, box: ib.box });
       }
-      rowItems.push({ kind: "row", label: lbl, values: vals, raw, y: cy0, y1: r.y1 });
+      rowItems.push({ kind: "row", label: lbl, values: vals, raw, y: cy0, y1: r.y1, boxes: [null, null, null, null, null] });
     }
     const got = await readDigitsBatch(im, pend.map(p => p.box), ocr);
     for (let i = 0; i < pend.length; i++) {
       let t = got[i];
-      if (!t || t.length > 2) t = await readDigits(im, pend[i].box, ocr);   // segundo intento, casilla a casilla
+      if (!t || t.length !== expLen(pend[i].box)) t = (await readDigits(im, pend[i].box, ocr)) || t;   // segundo intento, casilla a casilla
       const it = rowItems[pend[i].ri];
-      it.values[pend[i].c] = t ? +t : null; it.raw[pend[i].c] = t || "?";
+      it.values[pend[i].c] = t ? +t : null; it.raw[pend[i].c] = t || "?"; it.boxes[pend[i].c] = pend[i].box;
     }
     items.push(...rowItems);
 
@@ -279,83 +359,130 @@
     }
 
     // tarjeta de arriba (fecha, nombres) si aparece
-    for (const l of lines) {
-      const m = l.text.match(/(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(20\d\d)/);
-      if (m && l.y0 < im.height * 0.5) { items.push({ kind: "date", d: +m[1], m: +m[2], yy: +m[3], y: l.y0 }); break; }
+    const card = findCard(im);
+    if (card) {
+      const c = await readCard(im, ocr, card);
+      items.push({ kind: "card", y: card.y0, y1: card.y1, box: card, ...c });
     }
     items.sort((a, b) => a.y - b.y);
     return { ok: true, items, layout: L, lines };
   }
 
-  // ---------- unir piezas en una partida ----------
-  function rowKey(it) { return it.kind + "|" + (it.kind === "row" ? norm(it.label) + "|" + it.values.join(",") : it.kind === "band" ? it.type + it.value : it.kind === "header" ? it.side : ""); }
-  // concatena dos listas eliminando el solape (sufijo de A == prefijo de B)
-  function mergeSeq(A, B) {
-    const ka = A.map(rowKey), kb = B.map(rowKey);
-    let best = 0;
-    for (let k = Math.min(ka.length, kb.length); k >= 1; k--) {
-      let ok = true;
-      for (let i = 0; i < k; i++) if (ka[ka.length - k + i] !== kb[i]) { ok = false; break; }
-      if (ok) { best = k; break; }
+  // ---------- unir capturas en una partida ----------
+  const rowKey = it => norm(it.label) + "|" + it.values.join(",");
+  function looseMatch(label, list) {
+    const t = norm(label).replace(/ /g, ""); if (t.length < 6) return null;
+    let best = null, bl = 0;
+    for (const n of list) {
+      const k = norm(n).replace(/ /g, ""); let i = 0;
+      while (i < t.length && i < k.length && t[i] === k[i]) i++;
+      if (i >= 6 && i > bl) { bl = i; best = n; }
     }
-    if (!best) { // buscar B[0] dentro de A (solape parcial con ruido)
-      for (let i = 0; i < ka.length; i++) if (ka[i] === kb[0] && kb[0].startsWith("row")) {
-        let j = 0; while (i + j < ka.length && j < kb.length && ka[i + j] === kb[j]) j++;
-        if (i + j === ka.length) { best = j; break; }
-      }
-    }
-    return A.concat(B.slice(best));
+    return best;
   }
-
-  function emptySide() { return { primary: { name: "", rounds: [0, 0, 0, 0, 0] }, secondaries: [], cp: [0, 0, 0, 0, 0], painted: null, totals: {} }; }
-
-  // interpreta la secuencia de piezas de arriba a abajo
-  function assemble(items) {
-    const g = { date: "", me: emptySide(), opp: emptySide(), title: null, warnings: [] };
-    let side = null, sect = null;
-    for (const it of items) {
-      if (it.kind === "title") { g.title = { me: it.me, opp: it.opp }; continue; }
-      if (it.kind === "date") { g.date = `${it.yy}-${String(it.m).padStart(2, "0")}-${String(it.d).padStart(2, "0")}`; continue; }
-      if (it.kind === "header") { side = it.side; sect = null; continue; }
-      if (it.kind === "band") {
-        sect = it.type;
-        // sin cabecera visible: deducir lado (si ya vimos pintado del lado "me" pasamos a "opp")
-        if (!side) side = "me";
-        if (it.type === "primary" && g[side].totals.primary != null && side === "me") side = "opp";
-        if (it.type) g[side].totals[it.type] = it.value;
-        if (it.type === "painted") { g[side].painted = it.value; }
-        continue;
+  function classify(label, values) {
+    if (/\bcp\b|remain/i.test(label)) return { type: "cp" };
+    if (lev(norm(label), "end of battle") <= 3) return null;
+    const p = bestMatch(label, PRIMS); if (p) return { type: "primary", name: p.name };
+    const s = bestMatch(label, SECS); if (s) return { type: "secondary", name: s.name };
+    const lp = looseMatch(label, PRIMS); if (lp) return { type: "primary", name: lp };
+    const ls = looseMatch(label, SECS); if (ls) return { type: "secondary", name: ls };
+    const letters = (label.match(/[a-z]{3,}/gi) || []).join("");
+    if (letters.length >= 6 && values && values.some(v => v)) return { type: "secondary", name: label.trim(), unknownName: true };
+    return null;
+  }
+  function newSide() { return { prim: null, primObs: [], secs: new Map(), cpObs: [], totals: {}, eob: null }; }
+  function voteVals(obs) {
+    const out = [];
+    for (let c = 0; c < 5; c++) {
+      const cnt = {};
+      for (const o of obs) if (o[c] != null) cnt[o[c]] = (cnt[o[c]] || 0) + 1;
+      const best = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
+      out.push(best ? +best[0] : null);
+    }
+    return out;
+  }
+  // shots: [{items}] en orden (fotos o fotogramas)
+  function mergeShots(shots) {
+    const st = { me: newSide(), opp: newSide(), title: null, date: null, names: {}, keys: { me: new Set(), opp: new Set() } };
+    let lastSide = null;
+    for (const shot of shots) {
+      const items = shot.items.slice().sort((a, b) => a.y - b.y);
+      const firstH = items.find(i => i.kind === "header");
+      let cur = firstH && firstH.side === "opp" ? "me" : null;
+      const unknown = [];
+      for (const it of items) {
+        if (it.kind === "title") { st.title = st.title || { me: it.me, opp: it.opp }; continue; }
+        if (it.kind === "card") { if (it.date && !st.date) st.date = it.date; if (it.meName && !st.names.me) st.names.me = it.meName; if (it.oppName && !st.names.opp) st.names.opp = it.oppName; continue; }
+        if (it.kind === "header") { cur = it.side; continue; }
+        if (it.kind === "date") { if (!st.date) st.date = it; continue; }
+        it._side = cur; if (!cur) unknown.push(it);
       }
-      if (!side) side = "me";
-      const S = g[side];
-      if (it.kind === "eob") { S.eob = it.value; continue; }
-      if (it.kind === "row") {
-        const v = it.values.map(x => x == null ? null : x);
-        if (/cp|remain/i.test(it.label)) { S.cp = v.map(x => x || 0); sect = "after"; continue; }
-        if (sect === "primary") {
-          const m = bestMatch(it.label, PRIMS);
-          S.primary = { name: m ? m.name : it.label, rounds: v.map(x => x || 0), unknown: v.some(x => x == null) };
-          continue;
-        }
-        const m = bestMatch(it.label, SECS);
-        const name = m ? m.name : it.label;
-        if (!S.secondaries.some(s => s.name === name)) S.secondaries.push({ name, rounds: v.map(x => x || 0), unknown: v.some(x => x == null) });
+      if (unknown.length) {
+        // ¿de qué lado son? por filas ya vistas; si no, el último lado visto
+        let vm = 0, vo = 0;
+        for (const it of unknown) if (it.kind === "row") { const k = rowKey(it); if (st.keys.me.has(k)) vm++; if (st.keys.opp.has(k)) vo++; }
+        const side = vm > vo ? "me" : vo > vm ? "opp" : (lastSide || "me");
+        unknown.forEach(it => it._side = side);
+      }
+      for (const it of items) {
+        const side = it._side; if (!side) continue;
+        const S = st[side]; lastSide = side;
+        if (it.kind === "band") { if (it.type && it.value != null) S.totals[it.type] = it.value; continue; }
+        if (it.kind === "eob") { S.eob = it.value; continue; }
+        if (it.kind !== "row") continue;
+        st.keys[side].add(rowKey(it));
+        const c = classify(it.label, it.values); if (!c) continue;
+        if (c.type === "cp") S.cpObs.push(it.values);
+        else if (c.type === "primary") { S.prim = S.prim || c.name; S.primObs.push(it.values); }
+        else { if (!S.secs.has(c.name)) S.secs.set(c.name, { obs: [], unknownName: !!c.unknownName }); S.secs.get(c.name).obs.push(it.values); }
       }
     }
+    const g = { date: "", me: null, opp: null, title: st.title, names: st.names };
+    if (st.date) g.date = `${st.date.yy}-${String(st.date.m).padStart(2, "0")}-${String(st.date.d).padStart(2, "0")}`;
     for (const k of ["me", "opp"]) {
-      const S = g[k];
-      if (S.eob) S.primary.rounds[4] += S.eob;
-      const p = S.primary.rounds.reduce((a, b) => a + b, 0), s = S.secondaries.reduce((a, x) => a + x.rounds.reduce((p, q) => p + q, 0), 0);
-      S.check = {
-        primary: S.totals.primary == null ? null : p === S.totals.primary,
-        secondary: S.totals.secondary == null ? null : s === S.totals.secondary,
-        total: g.title ? (p + s + (S.painted || 0)) === g.title[k] : null
+      const S = st[k];
+      const pv = S.primObs.length ? voteVals(S.primObs) : [0, 0, 0, 0, 0];
+      const out = {
+        primary: { name: S.prim || "", rounds: pv.map(v => v || 0), unknown: pv.some(v => v == null) },
+        secondaries: [...S.secs.entries()].map(([name, o]) => { const v = voteVals(o.obs); return { name, rounds: v.map(x => x || 0), unknown: v.some(x => x == null), unknownName: o.unknownName }; }),
+        cp: S.cpObs.length ? voteVals(S.cpObs).map(v => v || 0) : [0, 0, 0, 0, 0],
+        painted: S.totals.painted != null ? S.totals.painted : null,
+        totals: S.totals
       };
-      if (S.painted == null) S.painted = 10;
+      if (S.eob) out.primary.rounds[4] += S.eob;
+      const p = out.primary.rounds.reduce((a, b) => a + b, 0), s = out.secondaries.reduce((a, x) => a + x.rounds.reduce((q, r) => q + r, 0), 0);
+      if (out.painted == null) out.painted = 10;
+      out.check = {
+        primary: S.totals.primary == null ? null : Math.min(p, 45) === S.totals.primary,
+        secondary: S.totals.secondary == null ? null : Math.min(s, 45) === S.totals.secondary,
+        total: g.title ? (Math.min(p, 45) + Math.min(s, 45) + out.painted) === g.title[k] : null
+      };
+      g[k] = out;
     }
     return g;
   }
 
-  const api = { layout, readShot, mergeSeq, assemble, setPrimaries, bestMatch, SECS, crop, prep };
+  // Si las sumas no cuadran con los totales de la captura, vuelve a leer casilla a casilla
+  // (varios ajustes y votación) solo las filas del lado que falla.
+  async function repair(shots, imgs, ocr) {
+    let g = mergeShots(shots);
+    const bad = ["me", "opp"].filter(k => g[k].check.primary === false || g[k].check.secondary === false || g[k].check.total === false || g[k].primary.unknown || g[k].secondaries.some(x => x.unknown));
+    if (!bad.length) return g;
+    for (let si = 0; si < shots.length; si++) {
+      const im = imgs ? imgs[si] : shots[si].img; if (!im) continue;
+      for (const it of shots[si].items) {
+        if (it.kind !== "row" || !bad.includes(it._side) || !it.boxes) continue;
+        for (let c = 0; c < 5; c++) {
+          if (!it.boxes[c]) continue;
+          const t = await readDigits(im, it.boxes[c], ocr, true);
+          if (t) it.values[c] = +t;
+        }
+      }
+    }
+    return mergeShots(shots);
+  }
+
+  const api = { layout, readShot, mergeShots, repair, findCard, setPrimaries, bestMatch, SECS, crop, prep };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.WJReader = api;
 })(typeof window !== "undefined" ? window : globalThis);

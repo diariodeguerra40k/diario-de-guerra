@@ -37,3 +37,5 @@ window.ARMY_FILES = {
 "White Scars": "White_Scars.jpg",
 "World Eaters": "World_Eaters.jpg"
 };
+/* ilustración tal como sale en la tarjeta del War Journal (sacada de partidas reales) */
+window.ARMY_CARDS = {"Adeptus Custodes":"Adeptus_Custodes.png","Orks":"Orks.png","Salamanders":"Salamanders.png","Dark Angels":"Dark_Angels.png","Imperial Knights":"Imperial_Knights.png","Drukhari":"Drukhari.png","World Eaters":"World_Eaters.png","Death Guard":"Death_Guard.png","T'au Empire":"T_au_Empire.png","Tyranids":"Tyranids.png"};

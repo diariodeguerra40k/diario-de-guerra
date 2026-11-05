@@ -32,7 +32,7 @@
     return { text: r.data.text, lines, words };
   }
   async function blobToImage(blob, maxW) {
-    const bmp = await createImageBitmap(blob);
+    let bmp; try { bmp = await createImageBitmap(blob, { colorSpaceConversion: "none" }); } catch (e) { bmp = await createImageBitmap(blob); }
     const sc = Math.min(1, (maxW || 1400) / bmp.width);
     const c = document.createElement("canvas"); c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
     const x = c.getContext("2d", { willReadFrequently: true }); x.drawImage(bmp, 0, 0, c.width, c.height);
@@ -41,7 +41,7 @@
   }
 
   /* ---------- ejércitos por la ilustración ---------- */
-  // huella de color: histograma HSV 12x3x3 de la imagen reducida a 48x48
+  // huella de color: histograma HSV 16x4x4 de la imagen reducida a 48x48 (normalizado)
   function rgb2hsv(r, g, b) {
     const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
     let h = 0;
@@ -49,16 +49,17 @@
     return [Math.min(255, Math.floor(h * 256)), mx ? Math.floor(d / mx * 255) : 0, mx];
   }
   function featOf(img, x0, y0, w, h) {
-    const N = 48, hist = new Float32Array(108);
+    const N = 48, hist = new Float32Array(256);
     for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
       const x = Math.min(img.width - 1, Math.round(x0 + (i + 0.5) * w / N)), y = Math.min(img.height - 1, Math.round(y0 + (j + 0.5) * h / N));
       const k = (y * img.width + x) * 4, [H, S, V] = rgb2hsv(img.data[k], img.data[k + 1], img.data[k + 2]);
-      hist[Math.floor(H * 12 / 256) * 9 + Math.floor(S * 3 / 256) * 3 + Math.floor(V * 3 / 256)]++;
+      hist[Math.floor(H * 16 / 256) * 16 + Math.floor(S * 4 / 256) * 4 + Math.floor(V * 4 / 256)]++;
     }
-    for (let i = 0; i < 108; i++) hist[i] /= N * N;
-    return Array.from(hist);
+    for (let i = 0; i < 256; i++) hist[i] /= N * N;
+    return Array.from(hist, v => Math.round(v * 10000) / 10000);
   }
-  const inter = (a, b) => { let s = 0; for (let i = 0; i < a.length; i++) s += Math.min(a[i], b[i]); return s; };
+  // parecido de Bhattacharyya entre dos histogramas (1 = idénticos)
+  const inter = (a, b) => { if (!a || !b || a.length !== b.length) return 0; let s = 0; for (let i = 0; i < a.length; i++) s += Math.sqrt(a[i] * b[i]); return s; };
 
   const findCard = img => WJReader.findCard(img);
 
@@ -73,13 +74,18 @@
           // la parte izquierda del recorte es el borde rasgado oscuro: se ignora
           refs.push({ army, feat: featOf(img, img.width * 0.35, 0, img.width * 0.65, img.height), base: true });
         } catch (e) { }
-      }));
+      }).concat(Object.entries(window.ARMY_CARDS || {}).map(async ([army, file]) => {
+        try {
+          const img = await blobToImage(await (await fetch("img/tarjetas/" + file)).blob(), 400);
+          refs.push({ army, feat: featOf(img, 0, 0, img.width, img.height), card: true });
+        } catch (e) { }
+      })));
     }
     return refs.concat(extra || []);
   }
   function rankArmies(feat, all) {
     const best = {};
-    for (const r of all) { const s = inter(feat, r.feat) + (r.base ? 0 : 0.03); if (!(best[r.army] >= s)) best[r.army] = s; }
+    for (const r of all) { const s = inter(feat, r.feat); if (!(best[r.army] >= s)) best[r.army] = s; }
     return Object.entries(best).sort((a, b) => b[1] - a[1]).map(([army, score]) => ({ army, score }));
   }
   async function armiesFromCard(img, learned) {
@@ -94,17 +100,18 @@
   async function readPhotos(blobs, onStatus, learned) {
     onStatus && onStatus("Preparando el lector (la primera vez tarda un poco)…");
     await getWorker();
-    const shots = []; let arm = null;
+    const shots = [], imgs = []; let arm = null;
     for (let i = 0; i < blobs.length; i++) {
       onStatus && onStatus(blobs.length > 1 ? `Leyendo la captura ${i + 1} de ${blobs.length}…` : "Leyendo la captura…");
       const img = await blobToImage(blobs[i], 1400);
       const r = await WJReader.readShot(img, ocr);
       if (!r.ok) continue;
-      shots.push({ items: r.items });
+      shots.push({ items: r.items }); imgs.push(img);
       if (!arm) arm = await armiesFromCard(img, learned).catch(() => null);
     }
     if (!shots.length) return null;
-    const g = WJReader.mergeShots(shots);
+    onStatus && onStatus("Comprobando las sumas…");
+    const g = await WJReader.repair(shots, imgs, ocr);
     g.armies = arm;
     return g;
   }
@@ -139,8 +146,9 @@
   async function readVideo(file, onStatus, learned) {
     onStatus && onStatus("Preparando el lector…");
     await getWorker();
-    const groups = new Map(); // "88-82" -> {shots, arm, frame}
-    let pct = 0;
+    const groups = new Map(); // "88-82" -> {shots, imgs, arm, frame, g}
+    let pct = 0, curKey = null;
+    const finalize = async G => { if (!G || G.g) return; G.g = await WJReader.repair(G.shots, null, ocr); G.shots.forEach(x => { x.img = null; }); };
     await videoFrames(file, p => { pct = Math.round(p * 100); }, async img => {
       onStatus && onStatus(`Leyendo el vídeo… ${pct}%` + (groups.size ? ` · ${groups.size} partida${groups.size > 1 ? "s" : ""} encontrada${groups.size > 1 ? "s" : ""}` : ""));
       if (!WJReader.layout(img)) return; // solo pantallas Results
@@ -148,15 +156,19 @@
       if (!r.ok) return;
       const t = r.items.find(x => x.kind === "title"); if (!t) return;
       const k = t.me + "-" + t.opp;
+      if (curKey && curKey !== k) await finalize(groups.get(curKey));
+      curKey = k;
       let G = groups.get(k);
-      if (!G) { G = { shots: [], arm: null, frame: null }; groups.set(k, G); }
-      G.shots.push({ items: r.items });
+      if (!G) { G = { shots: [], arm: null, frame: null, g: null }; groups.set(k, G); }
+      if (G.g) { G.g = null; } // volvió a una partida ya cerrada: se recalcula sin repasar
+      G.shots.push({ items: r.items, img });
       if (!G.arm) { const a = await armiesFromCard(img, learned).catch(() => null); if (a) { G.arm = a; G.frame = await imgToBlob(img); } }
       if (!G.frame) G.frame = await imgToBlob(img);
     });
     const out = [];
     for (const G of groups.values()) {
-      const g = WJReader.mergeShots(G.shots);
+      if (!G.g) await finalize(G);
+      const g = G.g || WJReader.mergeShots(G.shots);
       g.armies = G.arm;
       g.frameBlob = G.frame || null;
       out.push(g);

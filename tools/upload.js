@@ -14,7 +14,7 @@ function fromReader(r){
   draftArm = null;
   if(r.armies){
     draftArm = { me: r.armies.featMe, opp: r.armies.featOpp, guessMe: "", guessOpp: "" };
-    const top = (list) => list && list[0] && list[0].score > 0.42 && (!list[1] || list[0].score - list[1].score > 0.04) ? ARMY_NAME(list[0].army) : "";
+    const top = (list) => list && list[0] && list[0].score > 0.7 && (!list[1] || list[0].score - list[1].score >= 0.06) ? ARMY_NAME(list[0].army) : "";
     const habit = lastMyArmy();
     const meList = r.armies.me || [], oppList = r.armies.opp || [];
     g.me.army = (habit && meList.slice(0,3).some(x => ARMY_NAME(x.army) === habit)) ? habit : top(meList);
@@ -35,7 +35,8 @@ function fromReader(r){
     if(total(g.me) !== r.title.me) warn.push(`tu total da ${total(g.me)} y la captura dice ${r.title.me}`);
     if(total(g.opp) !== r.title.opp) warn.push(`el total del rival da ${total(g.opp)} y la captura dice ${r.title.opp}`);
   }
-  if(!g.me.secondaries.length && !g.opp.secondaries.length) warn.push("no veo las secundarias: quizá falta una de las dos capturas");
+  if(!g.me.secondaries.length || !g.opp.secondaries.length) warn.push("faltan secundarias de algún jugador: quizá falta alguna captura");
+  if(r.me.totals.secondary == null || r.opp.totals.secondary == null) warn.push("no he visto entera la pantalla: sube capturas que cubran desde arriba hasta abajo");
   return { g, warn, title: r.title };
 }
 function reviewText(x, prefix){
@@ -44,8 +45,8 @@ function reviewText(x, prefix){
   return (prefix || "Leído. ") + a + (x.warn.length ? "Ojo: " + x.warn.join("; ") + ". Revisa esas casillas." : "Todo cuadra con los totales de la captura.") + missing + " Completa layout y destacamentos.";
 }
 async function readImage(blobIn){
-  const blobs = Array.isArray(blobIn) ? blobIn.slice(0,2) : [blobIn];
-  draftImg = await shrink(await stitch(blobs)); setStep(1);
+  const blobs = Array.isArray(blobIn) ? blobIn.slice(0,6) : [blobIn];
+  draftImg = await shrink(blobs[0]); setStep(1);
   try{
     const r = await Lector.readPhotos(blobs, m => status(m), learnedRefs);
     status("");
@@ -87,7 +88,7 @@ async function nextFromVideo(){
 function pickFiles(list){
   const fs = [...(list||[])], vid = fs.find(f => f.type.startsWith("video/")), imgs = fs.filter(f => f.type.startsWith("image/"));
   if(vid) return readVideo(vid);
-  if(imgs.length) readImage(imgs.slice(0,2));
+  if(imgs.length) readImage(imgs.slice(0,6));
 }
 /* si el usuario corrige el ejército, guardar la huella de la ilustración para acertar la próxima vez (para todos) */
 function learnArmies(d){

@@ -37,10 +37,11 @@ rep('<div class="notice" id="storageNote"><span class="pill warn" id="storagePil
 
 # ---------- quitar "lo que vendrá" y el botón de ejemplo ----------
 rep(r'\n  <section class="panel roadmap" id="roadmap">.*?</section>', '', regex=True)
+rep('<strong>Arrastra aquí la captura de resultados</strong>', '<strong>Sube las capturas o el vídeo de la partida</strong>')
 rep('<span class="muted">¿No tienes una a mano?</span><button id="useExample">Probar con la captura de ejemplo</button>', '<span class="muted">¿Prefieres escribirlo tú?</span>')
 rep(r'\$\("#useExample"\)\.onclick = .*?\n', '', regex=True)
 rep('La pantalla «Results» del War Journal: 1 o 2 fotos de la misma partida (por ejemplo, la parte de arriba y la de abajo). También puedes subir un vídeo grabando la pantalla con varias partidas.',
-    'La pantalla «Results» del War Journal: 1 o 2 capturas de la misma partida (la parte de arriba y la de abajo). También puedes subir un vídeo grabando la pantalla con varias partidas. Todo se lee en tu móvil, gratis.')
+    'La pantalla «Results» del War Journal: haz capturas mientras bajas hasta el final (normalmente 3 o 4) y súbelas todas juntas. O mejor aún, graba un vídeo de la pantalla bajando despacio: sirve para una o varias partidas. Todo se lee en tu móvil, gratis.')
 
 # ---------- almacenamiento: Supabase ----------
 a = s.index('/* ---------- Storage: private per-user store')
@@ -74,6 +75,8 @@ rep('  try{ await saveGame(draft); ls("dg40k.last"',
     '  try{ learnArmies(draft); await saveGame(draft); ls("dg40k.last"')
 
 rep('  setStep(2); window.scrollTo({top:0});\n}', '  setStep(2); window.scrollTo({top:0}); renderArmySug();\n}')
+
+rep('const MISSIONS = CAT_ORDER.flatMap(a=>MATRIX[a]);', 'const MISSIONS = CAT_ORDER.flatMap(a=>MATRIX[a]);\nif(window.WJReader) WJReader.setPrimaries(MISSIONS);')
 
 # ---------- scripts externos (antes del script principal) ----------
 rep('<datalist id="armies"></datalist>',
