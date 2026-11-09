@@ -147,7 +147,44 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,
 
 /* franja del equipo */
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* Móvil compacto: entrar y elegir herramienta caben en la primera pantalla */
+@media (max-width:640px){
+  .top{padding-block:8px}
+  .hero{gap:14px;padding-block:12px 24px}
+  .intro{gap:8px}
+  .intro .crest{width:52px;height:52px}
+  .intro .team,.tag,.tools{display:none}
+  .intro .title{font-size:30px}
+  .brandname strong{font-size:16px;padding:6px 12px 5px;letter-spacing:.16em}
+  .plate{padding:18px 16px 16px}
+  .plate .sub{display:none}
+  .plate h2{font-size:18px;margin:0}
+  .gate-in{gap:12px}
+  form{gap:10px}
+  input{padding:10px 12px;font-size:16px}
+  .tabs button{padding:9px 6px}
+  .primary{padding:12px}
+  .msg{min-height:0}
+  .msg:empty{display:none}
+  .hubhead{flex-direction:row;text-align:left;gap:12px;padding-block:14px 12px}
+  .hubhead .crest{display:none}
+  .who span{display:none}
+  .top .right{flex-wrap:nowrap}
+  .hubhead .team{display:none}
+  .hubhead .title{font-size:24px}
+  .hubhead p{font-size:14px;margin-top:4px}
+  .cards{gap:10px;padding-bottom:16px}
+  .card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:14px;row-gap:2px;align-items:center;min-height:0;padding:14px}
+  .card .art,.card .num{display:none}
+  .card .ico{grid-row:1/span 2;width:46px;height:46px}
+  .card .ico svg{width:22px;height:22px}
+  .card h3{font-size:17px;margin:0;grid-column:2}
+  .card p{grid-column:2;font-size:13.5px;line-height:1.35}
+  .card .go{grid-column:3;grid-row:1/span 2;margin:0;padding:0;font-size:0;gap:0}
+  .card .go i{font-size:22px}
+}
 </style>
+
 </head>
 <body>
 <div class="hazard" aria-hidden="true"></div>
