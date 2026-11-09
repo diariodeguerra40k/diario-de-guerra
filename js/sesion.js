@@ -3,7 +3,7 @@
    página ya estás dentro en todas. Requiere vendor/supabase.js y js/config.js antes. */
 (function(){
   var sb = (window.supabase && window.DG_CONFIG) ? supabase.createClient(DG_CONFIG.url, DG_CONFIG.key) : null;
-  var INICIO = "inicio.html"; // en la prueba; al final pasará a ser index.html
+  var INICIO = "index.html";
 
   function nombre(user){
     if(!user) return "";

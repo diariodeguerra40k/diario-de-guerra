@@ -1,5 +1,6 @@
 # Convierte la vista previa (artifact de Claude) en la web propia con Supabase y lector gratuito.
-# Uso: python3 tools/build_index.py <vista-previa.html> index.html
+# Uso: python3 tools/build_index.py <vista-previa.html> diario.html
+# (index.html es la portada «Herramientas de Guerra»; el Diario vive en diario.html)
 import re, sys, json
 
 src, dst = sys.argv[1], sys.argv[2]
@@ -88,6 +89,11 @@ rep('<datalist id="armies"></datalist>',
 
 # arranque: primero la sesión
 rep('refresh(); initStore();\n</script>', 'refresh(); initStore();\n</script>\n</body>\n</html>')
+
+# ---------- enlace a la portada «Herramientas de Guerra» ----------
+rep('  <div class="hdr-right">', '  <div class="hdr-right">\n  <a class="back-hub" href="index.html">&larr; Herramientas</a>')
+rep('</style>\n<link rel="stylesheet" href="css/extra.css">', '.back-hub{color:#fff;text-decoration:none;font-family:var(--f-label);font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}\n.back-hub:hover{background:rgba(255,255,255,.2)}\n</style>\n<link rel="stylesheet" href="css/extra.css">')
+rep('$("#logoutBtn").onclick = async () => { await sb.auth.signOut(); location.hash = "panel"; };', '$("#logoutBtn").onclick = async () => { await sb.auth.signOut(); location.href = "index.html"; };')
 
 open(dst, "w", encoding="utf-8").write(s)
 print("ok", len(s))
