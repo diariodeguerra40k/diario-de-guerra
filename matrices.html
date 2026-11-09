@@ -1,0 +1,1069 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="img/icono.svg" type="image/svg+xml">
+<title>Matrices Talavera Warhammelgas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+[hidden]{display:none!important}
+
+/* Layout: one working column; rival tabs and "Soy" on top, the matrix as the centrepiece, mission legend underneath. */
+/* Imperial vellum: light parchment page, dark ink, oxblood and brass trim, gothic display face, a faint cog behind the title. */
+:root {
+  --bg: #efe6d2; --surface: #fbf7ee; --surface-2: #f1e9d8; --fg: #2a1f16; --muted: #6d5a45;
+  --line: #d3c2a0; --accent: #8a2a1e; --accent-2: #a8822f; --accent-fg: #fff8ea; --focus: #2c5fbe; --blood: #8a2a1e;
+  --neg: #c0392f; --zero: #ddd3bf; --pos: #2f8a48; --empty: #eee5d3; --cell-fg: #ffffff;
+  --m-purge: #c8392f; --m-hold: #378f4c; --m-assets: #e0b02b; --m-disrupt: #2c5fbe; --m-recon: #1aa39d;
+  --gothic: "Cinzel", "Trajan Pro", Georgia, serif;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background:
+    radial-gradient(ellipse 90% 40% at 50% -10%, rgba(138, 42, 30, .14), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 0% 100%, rgba(168, 130, 47, .14), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 100% 60%, rgba(168, 130, 47, .10), transparent 70%),
+    linear-gradient(180deg, #f3ebd9 0%, #ece2cc 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+body { background-color: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.45; }
+.wrap { max-width: 1100px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 48px; display: grid; gap: 18px; }
+h1, h2 { font-family: var(--display); font-weight: 700; letter-spacing: .02em; text-wrap: balance; margin: 0; }
+h1 { font-family: var(--gothic); font-weight: 900; font-size: clamp(1.55rem, 3.6vw, 2.45rem); line-height: 1.05; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--accent); }
+header { padding-block: 6px 16px; border-bottom: 1px solid var(--line); box-shadow: 0 1px 0 var(--surface); }
+.brand { display: flex; align-items: center; gap: 16px; min-width: 0; flex: 1 1 520px; }
+.crest { flex: none; width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-fg);
+  box-shadow: 0 0 0 3px var(--surface), 0 0 0 4px var(--accent-2), 0 4px 12px rgba(80, 50, 20, .25); }
+.crest svg { width: 44px; height: 44px; }
+.brand-text { display: grid; gap: 2px; min-width: 0; }
+h2 { font-family: var(--gothic); font-weight: 700; font-size: 1.2rem; letter-spacing: .05em; color: var(--accent); }
+.eyebrow { font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; color: var(--accent-2); font-weight: 600; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.status { font-size: .78rem; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.status.live::before { background: var(--pos); box-shadow: 0 0 0 3px color-mix(in oklab, var(--pos) 20%, transparent); }
+.status.warn { color: var(--neg); }
+.status.warn::before { background: var(--neg); box-shadow: 0 0 0 3px color-mix(in oklab, var(--neg) 20%, transparent); }
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: end; justify-content: space-between; }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; }
+.tab { font: inherit; font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: .03em; cursor: pointer; padding: 6px 14px; border-radius: 5px; border: 1px solid transparent; background: transparent; color: var(--muted); }
+.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); box-shadow: 0 1px 3px rgba(80, 50, 20, .3); }
+.tab:hover:not([aria-selected="true"]) { color: var(--fg); background: var(--surface); }
+.field { display: flex; gap: 8px; align-items: center; }
+.field label { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 600; }
+select { font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; }
+select:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.matrix-box { overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 4px; box-shadow: 0 6px 18px rgba(80, 50, 20, .12); }
+table { border-collapse: separate; border-spacing: 4px; font-variant-numeric: tabular-nums; padding: 6px; }
+thead th { font-family: var(--display); font-weight: 700; font-size: 1rem; letter-spacing: .02em; text-align: center; vertical-align: bottom; padding: 0; height: 1px; min-width: 86px; max-width: 120px; line-height: 1.1; }
+thead th.corner { padding: 4px 6px; text-align: left; font-family: var(--body); font-weight: 500; font-size: .78rem; color: var(--muted); min-width: 0; }
+tbody th { text-align: left; padding: 0; position: sticky; left: 0; z-index: 1; background: var(--surface); }
+thead th.corner { position: sticky; left: 0; z-index: 2; background: var(--surface); }
+.army { display: grid; gap: 1px; padding: 6px 10px; border-radius: 5px; color: #fff; min-width: 150px; white-space: nowrap; }
+.army b { font-family: var(--display); font-size: 1.12rem; letter-spacing: .02em; font-weight: 700; }
+.army span { font-size: .72rem; opacity: .92; }
+.army.purge { background: var(--m-purge); } .army.hold { background: var(--m-hold); }
+.army.none { background: var(--zero); color: var(--fg); }
+.army.col { min-width: 0; white-space: normal; text-align: center; height: 100%; align-content: end; }
+.army.col b { font-size: 1rem; line-height: 1.1; }
+.army.assets { background: var(--m-assets); color: #2a2104; } .army.disrupt { background: var(--m-disrupt); } .army.recon { background: var(--m-recon); color: #04211f; }
+tr.mine .army { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--fg); }
+td.cell { height: 44px; min-width: 64px; text-align: center; border-radius: 5px; background: var(--empty); color: var(--muted); font-family: var(--mono); font-size: 1.05rem; padding: 0; }
+td.cell.filled { color: var(--cell-fg); }
+td.cell.v0, td.cell.v1 { color: var(--fg); }
+td.cell select { width: 100%; height: 44px; border: 0; background: transparent; color: inherit; font: inherit; text-align: center; text-align-last: center; padding: 0 4px; cursor: pointer; appearance: none; -webkit-appearance: none; border-radius: 5px; }
+td.cell select option { color: var(--fg); background: var(--surface); }
+tr.mine td.cell { box-shadow: inset 0 0 0 2px var(--fg); }
+th.sum { font-family: var(--display) !important; font-size: .95rem !important; text-transform: uppercase; letter-spacing: .06em; }
+td.sum, th.sum { font-family: var(--mono); font-size: .9rem; color: var(--muted); text-align: center; min-width: 52px; }
+tfoot th { text-align: right; font-size: .78rem; color: var(--muted); font-weight: 600; padding-right: 8px; }
+.foot { font-size: .82rem; color: var(--muted); margin: 0; padding: 0 12px 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .82rem; color: var(--muted); align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+.scale { display: inline-flex; gap: 3px; }
+.scale i { font-style: normal; font-family: var(--mono); font-size: .75rem; width: 26px; height: 20px; display: grid; place-items: center; border-radius: 3px; color: var(--cell-fg); }
+.cheat { display: grid; gap: 8px; }
+.cheat .note { margin: 0; color: var(--muted); font-size: .88rem; max-width: 70ch; }
+.cheat-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 4px; box-shadow: 0 6px 18px rgba(80, 50, 20, .12); }
+.cheat-table { border-collapse: collapse; width: 100%; padding: 0; font-size: .9rem; }
+.cheat-table th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; padding: 10px 12px; border-bottom: 1px solid var(--line); font-family: var(--body); white-space: nowrap; }
+.cheat-table td { padding: 7px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.cheat-table tr:last-child td { border-bottom: 0; }
+.cheat-table td.num { font-family: var(--mono); font-size: .85rem; }
+.vchip { display: inline-grid; place-items: center; min-width: 38px; height: 26px; border-radius: 4px; font-family: var(--mono); color: var(--cell-fg); }
+.tab.add { min-width: 40px; font-size: 1.3rem; line-height: 1; }
+button { font: inherit; font-weight: 500; cursor: pointer; border-radius: 6px; padding: 7px 12px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
+button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+button.ghost { background: transparent; }
+button.danger { color: var(--neg); background: transparent; border-color: var(--neg); margin-left: auto; }
+button.x { padding: 4px 9px; background: transparent; color: var(--muted); border-color: transparent; }
+button:disabled { opacity: .5; cursor: default; }
+input[type="text"] { font: inherit; color: var(--fg); background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; min-width: 0; width: 100%; }
+input:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.matrix-head { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; padding: 12px 12px 0; }
+.empty { padding: 28px 20px; display: grid; gap: 8px; }
+.empty p { margin: 0; color: var(--muted); }
+.editor { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 4px; box-shadow: 0 6px 18px rgba(80, 50, 20, .12); padding: 16px; display: grid; gap: 14px; max-width: 640px; }
+.ed-field { display: grid; gap: 6px; }
+.ed-field label, .ed-field .lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 600; }
+.ed-field > button { justify-self: start; }
+#ed-armies { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+#ed-armies li { display: grid; grid-template-columns: minmax(0, 1fr) 170px auto; gap: 6px; align-items: center; }
+select.msel { font-weight: 600; }
+select.msel.purge { background: var(--m-purge); color: #fff; } select.msel.hold { background: var(--m-hold); color: #fff; }
+select.msel.assets { background: var(--m-assets); color: #2a2104; } select.msel.disrupt { background: var(--m-disrupt); color: #fff; }
+select.msel.recon { background: var(--m-recon); color: #04211f; }
+select.msel option { background: var(--surface); color: var(--fg); }
+.ed-msg { margin: 0; font-size: .85rem; color: var(--neg); min-height: 1em; }
+.ed-msg:empty { display: none; }
+.ed-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.views-bar { padding: 12px 12px 0; }
+.views { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 7px; }
+.view { font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; padding: 5px 12px; border-radius: 5px; border: 0; background: transparent; color: var(--muted); }
+.view[aria-selected="true"] { background: var(--surface); color: var(--accent); box-shadow: 0 1px 3px rgba(80, 50, 20, .2); }
+.view:hover:not([aria-selected="true"]) { color: var(--fg); }
+.table-scroll { overflow-x: auto; }
+th.mine-col .army { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--fg); }
+td.cell.mine-cell { box-shadow: inset 0 0 0 2px var(--fg); }
+td.cell.meta { line-height: 1.05; position: relative; }
+td.cell.meta.adj::after { content: "✎"; position: absolute; top: 2px; right: 4px; font-size: .7rem; opacity: .85; }
+td.cell .pct { display: block; font-size: 1.05rem; }
+td.cell .msc { display: block; font-size: .68rem; opacity: .8; margin-top: 2px; }
+td.cell input[type="number"] { width: 100%; height: 44px; border: 0; background: transparent; color: inherit; font: inherit; text-align: center; padding: 0 4px; -moz-appearance: textfield; }
+td.cell input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+.meta-info { display: grid; gap: 6px; padding: 0 12px 14px; font-size: .85rem; color: var(--muted); max-width: 80ch; }
+.meta-info p { margin: 0; }
+.meta-info a { color: var(--accent); font-weight: 600; }
+.meta-info button { justify-self: start; }
+.army-btn { all: unset; display: block; width: 100%; height: 100%; cursor: pointer; border-radius: 5px; }
+.army-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.army-btn:hover .army { filter: brightness(1.08); box-shadow: 0 2px 8px rgba(80, 50, 20, .3); }
+.army-btn .army { position: relative; }
+.has-list { position: absolute; top: 2px; right: 4px; font-style: normal; font-size: .7rem; }
+.modal { position: fixed; inset: 0; z-index: 50; background: rgba(42, 31, 22, .45); display: grid; place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal-box { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 6px; box-shadow: 0 18px 50px rgba(40, 25, 10, .35);
+  width: min(640px, 100%); max-height: 100%; overflow: auto; padding: 16px; display: grid; gap: 10px; }
+.army-top { display: flex; gap: 10px; align-items: start; justify-content: space-between; }
+.army.big { min-width: 0; }
+.army.big b { font-size: 1.4rem; }
+.army-team { margin: -4px 0 0; color: var(--muted); font-size: .85rem; }
+.army-list { margin: 0; white-space: pre-wrap; font-family: var(--mono); font-size: .82rem; line-height: 1.5; background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 12px; max-height: 55vh; overflow: auto; }
+.army-empty { margin: 0; color: var(--muted); }
+#army-list-text { font: .85rem/1.5 var(--mono); width: 100%; color: var(--fg); background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 10px; resize: vertical; }
+.sec { margin: 6px 0 0; font-family: var(--gothic); font-size: 1rem; letter-spacing: .04em; color: var(--accent); }
+.maps { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.maps li { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; justify-content: space-between; padding: 7px 10px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; font-size: .88rem; }
+.maps .who { display: inline-flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.maps a { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.maps-sec { display: grid; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 4px; box-shadow: 0 6px 18px rgba(80, 50, 20, .12); padding: 14px 14px 12px; }
+.maps-head { display: grid; gap: 4px; }
+.maps-sec .note { margin: 0; color: var(--muted); font-size: .85rem; }
+.maps-pick { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end; }
+.mp-field { display: grid; gap: 4px; }
+.mp-field label { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 600; }
+.mp-vs { font-family: var(--gothic); color: var(--accent); padding-bottom: 8px; }
+.maps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.map-card { margin: 0; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.map-btn { all: unset; cursor: zoom-in; display: block; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); background: var(--surface-2); min-height: 160px; }
+.map-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.map-btn img { display: block; width: 100%; height: auto; max-height: 360px; object-fit: contain; }
+.map-card.loading .map-btn { background: repeating-linear-gradient(45deg, var(--surface-2) 0 10px, var(--empty) 10px 20px); }
+.map-card figcaption { display: flex; justify-content: space-between; gap: 8px; font-size: .82rem; color: var(--muted); }
+.map-card figcaption b { color: var(--fg); }
+.map-missing { padding: 24px 12px; display: grid; gap: 6px; text-align: center; color: var(--muted); font-size: .85rem; border: 1px dashed var(--line); border-radius: 4px; }
+.map-missing a { color: var(--accent); font-weight: 600; }
+.map-big { width: 100%; height: auto; border-radius: 4px; border: 1px solid var(--line); }
+body.no-scroll { overflow: hidden; }
+.viewer { position: fixed; inset: 0; z-index: 100; background: #0d0a08; color: #f3ead8; display: grid; grid-template-rows: auto 1fr; }
+.mv-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px)); background: rgba(0, 0, 0, .55); }
+.mv-title { font-size: .9rem; font-weight: 600; min-width: 0; }
+.mv-close { font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; border: 0; border-radius: 999px; padding: 10px 16px; background: #f3ead8; color: #2a1f16; min-height: 44px; white-space: nowrap; }
+.mv-stage { display: grid; place-items: center; min-height: 0; padding: 8px max(8px, env(safe-area-inset-right, 0px)) max(8px, env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); overflow: auto; }
+.mv-stage img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; touch-action: pinch-zoom; }
+.mv-missing { color: #cbbfa8; }
+.mv-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 64px; border: 0; border-radius: 8px; cursor: pointer;
+  background: rgba(243, 234, 216, .16); color: #f3ead8; font-size: 2.2rem; line-height: 1; }
+.mv-nav:hover { background: rgba(243, 234, 216, .3); }
+.mv-nav.prev { left: max(8px, env(safe-area-inset-left, 0px)); }
+.mv-nav.next { right: max(8px, env(safe-area-inset-right, 0px)); }
+.mv-close:focus-visible, .mv-nav:focus-visible { outline: 3px solid #7aa7ff; outline-offset: 2px; }
+.map-missing { padding: 40px 12px; text-align: center; color: var(--muted); font-size: .85rem; }
+@media (max-width: 520px) { .mv-close span { display: none; } .mv-nav { width: 40px; height: 52px; font-size: 1.8rem; } .mv-title { font-size: .8rem; } .maps-pick { display: grid; grid-template-columns: 1fr; } .mp-vs { padding: 0; } .mp-field select { width: 100%; } }
+@media (max-width: 520px) { #ed-armies li { grid-template-columns: minmax(0, 1fr) 130px auto; } }
+.army-btn { all: unset; display: block; width: 100%; height: 100%; cursor: pointer; border-radius: 5px; }
+.army-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.army-btn:hover .army { filter: brightness(1.08); box-shadow: 0 2px 8px rgba(80, 50, 20, .3); }
+.army-btn .army { position: relative; }
+.has-list { position: absolute; top: 2px; right: 4px; font-style: normal; font-size: .7rem; }
+.modal { position: fixed; inset: 0; z-index: 50; background: rgba(42, 31, 22, .45); display: grid; place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal-box { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 6px; box-shadow: 0 18px 50px rgba(40, 25, 10, .35);
+  width: min(640px, 100%); max-height: 100%; overflow: auto; padding: 16px; display: grid; gap: 10px; }
+.army-top { display: flex; gap: 10px; align-items: start; justify-content: space-between; }
+.army.big { min-width: 0; }
+.army.big b { font-size: 1.4rem; }
+.army-team { margin: -4px 0 0; color: var(--muted); font-size: .85rem; }
+.army-list { margin: 0; white-space: pre-wrap; font-family: var(--mono); font-size: .82rem; line-height: 1.5; background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 12px; max-height: 55vh; overflow: auto; }
+.army-empty { margin: 0; color: var(--muted); }
+#army-list-text { font: .85rem/1.5 var(--mono); width: 100%; color: var(--fg); background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 10px; resize: vertical; }
+@media (max-width: 520px) { h1 { font-size: 1.8rem; } .army { min-width: 120px; } }
+@media (prefers-reduced-motion: no-preference) { td.cell { transition: background-color .2s; } }
+/* ---- Modo torneo: banda de guerra arriba, fondo más oscuro y rojizo, matriz enmarcada; filas y columnas elegidas se apagan ---- */
+.tourney-btn { font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: .04em; padding: 8px 16px; background: var(--fg); color: var(--accent-fg); border-color: var(--fg); }
+.tourney-btn:hover { background: var(--accent); border-color: var(--accent); }
+.t-banner { display: none; }
+body.tourney { background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(200, 60, 40, .35), transparent 70%),
+    radial-gradient(ellipse 60% 60% at 50% 110%, rgba(168, 130, 47, .25), transparent 70%),
+    linear-gradient(180deg, #4a140e 0%, #2a0c08 100%); background-color: #2a0c08; background-attachment: fixed; }
+body.tourney::before { content: ""; position: fixed; inset: 0; z-index: 30; pointer-events: none; border: 6px solid var(--accent-2); box-shadow: inset 0 0 0 2px #2a0c08, inset 0 0 40px rgba(0, 0, 0, .45); }
+body.tourney h1 { color: #f6e7c8; text-shadow: 0 2px 10px rgba(0, 0, 0, .5); }
+body.tourney .eyebrow { color: #e0b65a; }
+body.tourney header { border-bottom: 1px solid rgba(224, 182, 90, .5); box-shadow: none; }
+body.tourney .crest { box-shadow: 0 0 0 3px #2a0c08, 0 0 0 5px var(--accent-2), 0 0 24px rgba(224, 182, 90, .45); }
+body.tourney .maps-sec { border-top-color: var(--accent-2); }
+.t-dot { width: 12px; height: 12px; border-radius: 50%; background: #ffcf5a; box-shadow: 0 0 0 0 rgba(255, 207, 90, .7); flex: none; }
+@media (prefers-reduced-motion: no-preference) { .t-dot { animation: tpulse 1.6s infinite; } }
+@keyframes tpulse { 0% { box-shadow: 0 0 0 0 rgba(255, 207, 90, .7); } 70% { box-shadow: 0 0 0 10px rgba(255, 207, 90, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 207, 90, 0); } }
+.views-bar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
+.t-tip { margin: 0; padding: 8px 14px; background: #2a1f16; color: #ffcf5a; border-left: 5px solid var(--accent-2); border-radius: 4px; font-weight: 600; font-size: .95rem; }
+.t-help { margin: 12px 12px 14px; padding: 12px 14px; background: #2a1f16; color: #f3ead8; border-left: 5px solid var(--accent-2); border-radius: 4px; display: grid; gap: 6px; font-size: .9rem; }
+.t-help h3 { margin: 0; font-family: var(--gothic); font-size: 1rem; letter-spacing: .06em; color: #e0b65a; }
+.t-help ol { margin: 0; padding-left: 1.2em; display: grid; gap: 3px; }
+.t-help .t-left { font-weight: 600; color: #ffcf5a; }
+body.tourney .t-banner { display: flex; position: sticky; top: 0; z-index: 40; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap;
+  padding: 14px max(22px, env(safe-area-inset-right, 0px)) 14px max(22px, env(safe-area-inset-left, 0px));
+  background: repeating-linear-gradient(135deg, rgba(0, 0, 0, .12) 0 14px, transparent 14px 28px), linear-gradient(180deg, #a3271b, #6e1e15); color: var(--accent-fg); border-bottom: 3px solid var(--accent-2); box-shadow: 0 4px 14px rgba(60, 20, 10, .35); }
+.t-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.t-title b { font-family: var(--gothic); font-weight: 900; font-size: clamp(1.2rem, 3.4vw, 1.6rem); letter-spacing: .12em; text-transform: uppercase; text-shadow: 0 2px 6px rgba(0, 0, 0, .4); }
+.t-title span { font-size: .85rem; opacity: .9; }
+.t-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.t-actions button { border-color: rgba(255, 248, 234, .5); background: transparent; color: var(--accent-fg); font-weight: 600; }
+.t-actions button.exit { background: var(--accent-fg); color: var(--accent); border-color: var(--accent-fg); }
+body.tourney .t-hide { display: none !important; }
+body.tourney .matrix-box { border: 2px solid var(--accent); border-top: 6px solid var(--accent); box-shadow: 0 0 0 4px rgba(168, 130, 47, .35), 0 10px 28px rgba(80, 30, 15, .3); }
+body.tourney header { border-bottom-color: var(--accent-2); }
+.pick-btn { all: unset; display: block; width: 100%; height: 100%; cursor: pointer; border-radius: 5px; position: relative; }
+.pick-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.pick-btn:hover .army { filter: brightness(1.1); }
+td.cell.off { background: #2e241b !important; color: transparent !important; }
+td.cell.off > * { visibility: hidden; }
+td.sum.off { background: #2e241b; color: transparent; border-radius: 5px; }
+.pick-btn.off-h .army { background: #2e241b !important; color: #8d7a63 !important; text-decoration: line-through; text-decoration-thickness: 2px; }
+.pick-btn.off-h::after { content: "✓"; position: absolute; top: 50%; right: 8px; transform: translateY(-50%); font: 900 1.4rem/1 var(--body); color: #e0b65a; }
+.t-count { font-size: .85rem; color: var(--muted); padding: 0 12px 12px; margin: 0; }
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/sesion.js"></script>
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDhj9raJNtY9Mb3nEShHkp5vDtZ9dfxT34",
+  authDomain: "matrices-talavera-warhammelgas.firebaseapp.com",
+  projectId: "matrices-talavera-warhammelgas",
+  storageBucket: "matrices-talavera-warhammelgas.firebasestorage.app",
+  messagingSenderId: "853698824409",
+  appId: "1:853698824409:web:1bb768043042d2095a96c8"
+};
+</script>
+</head>
+<body>
+<script>DGSesion.exigir();</script>
+<div class="t-banner" id="t-banner">
+  <div class="t-title"><span class="t-dot" aria-hidden="true"></span><b>⚔ Modo torneo</b><span id="t-sub"></span></div>
+  <div class="t-actions">
+    <button type="button" id="t-reset">Recuperar todos</button>
+    <button type="button" id="t-exit" class="exit">Salir del modo torneo</button>
+  </div>
+</div>
+<div class="wrap">
+  <header>
+      <div class="brand">
+      <div class="crest" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="9" stroke-dasharray="7 6.2"/><circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="3"/><text x="50" y="66" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-weight="900" font-size="46" fill="currentColor">W</text></svg></div>
+      <div class="brand-text">
+        <div class="eyebrow">Torneo por equipos · Talavera</div>
+        <h1>Matrices Talavera Warhammelgas</h1>
+      </div>
+    </div>
+    <div id="status" class="status">Conectando…</div>
+  </header>
+
+  <div class="toolbar t-hide">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <button type="button" id="t-enter" class="tourney-btn">⚔ Modo torneo</button>
+    <div class="field">
+      <label for="me-sel">Soy</label>
+      <select id="me-sel"></select>
+    </div>
+  </div>
+
+  <form id="editor" class="editor t-hide" hidden>
+    <h2 id="ed-title">Nueva matriz</h2>
+    <div class="ed-field">
+      <label for="ed-name">Equipo rival</label>
+      <input type="text" id="ed-name" placeholder="Nombre del equipo rival">
+    </div>
+    <div class="ed-field">
+      <span class="lbl">Ejércitos rivales y su misión</span>
+      <ul id="ed-armies"></ul>
+      <button type="button" id="ed-add" class="ghost">+ Añadir ejército</button>
+    </div>
+    <p id="ed-msg" class="ed-msg" role="status"></p>
+    <div class="ed-actions">
+      <button type="submit" id="ed-save" class="primary">Guardar matriz</button>
+      <button type="button" id="ed-cancel">Cancelar</button>
+      <button type="button" id="ed-delete" class="danger" hidden>Borrar matriz</button>
+    </div>
+  </form>
+
+  <section id="matrix-area" class="matrix-box" aria-live="polite"></section>
+  <div id="map-viewer" class="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="mv-title">
+    <div class="mv-bar">
+      <span id="mv-title" class="mv-title"></span>
+      <button type="button" id="mv-close" class="mv-close" aria-label="Cerrar mapa">✕ <span>Cerrar</span></button>
+    </div>
+    <div id="mv-stage" class="mv-stage">
+      <img id="mv-img" alt="">
+      <p id="mv-missing" class="mv-missing" hidden>Mapa pendiente de subir</p>
+    </div>
+    <button type="button" id="mv-prev" class="mv-nav prev" aria-label="Mapa anterior">‹</button>
+    <button type="button" id="mv-next" class="mv-nav next" aria-label="Mapa siguiente">›</button>
+  </div>
+  <div id="army-modal" class="modal" hidden><div id="army-box" class="modal-box" role="dialog" aria-modal="true" aria-label="Lista del ejército"></div></div>
+
+  <div class="legend t-hide" id="legend"></div>
+
+  <section class="maps-sec" aria-labelledby="maps-title">
+    <div class="maps-head">
+      <h2 id="maps-title">Mapas posibles</h2>
+      <p class="note">Elige las dos misiones que se enfrentan y verás los 3 mapas posibles. Toca un mapa para verlo a pantalla completa.</p>
+    </div>
+    <div class="maps-pick">
+      <div class="mp-field"><label for="map-a">Nuestra misión</label><select id="map-a"></select></div>
+      <span class="mp-vs">contra</span>
+      <div class="mp-field"><label for="map-b">Misión rival</label><select id="map-b"></select></div>
+    </div>
+    <div class="maps-grid" id="maps-grid"></div>
+  </section>
+
+  <section class="cheat t-hide" aria-labelledby="cheat-title">
+    <h2 id="cheat-title">Chuleta: qué significa cada puntuación</h2>
+    <p class="note">Cada casilla es el resultado que esperas en esa partida. El resultado de equipo va de 0 a 20 según la diferencia de puntos de victoria (VP) con el rival. Los valores son aproximados.</p>
+    <div class="cheat-box"><table class="cheat-table">
+      <thead><tr><th>Valor</th><th>Qué esperas</th><th>Resultado aprox.</th><th>Diferencia de VP</th><th>Escala 1-5</th></tr></thead>
+      <tbody id="cheat-body"></tbody>
+    </table></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  // ---- Datos fijos de los equipos (para cambiarlos, edita estas listas) ----
+  const MISSIONS = {
+    purge: "Purge the Foe", hold: "Take and Hold", assets: "Priority Assets",
+    disrupt: "Disruption", recon: "Reconnaissance",
+  };
+  const TEAM = [
+    { id: "caballeros-grises", army: "Caballeros Grises", player: "David Fuentes", mission: "hold" },
+    { id: "custodes", army: "Adeptus Custodes", player: "Jose Carlos Bueno", mission: "assets" },
+    { id: "orkos", army: "Orkos", player: "Miquel Sastre", mission: "purge" },
+    { id: "tiranidos", army: "Tiránidos", player: "Pau Salas", mission: "disrupt" },
+    { id: "lobos-espaciales", army: "Lobos Espaciales", player: "Toni Servera", mission: "purge" },
+    { id: "astra-militarum", army: "Astra Militarum", player: "Victor Martinez", mission: "recon" },
+  ];
+  // Rivales iniciales. Los que se crean o editan desde la página se guardan en la base de datos y mandan sobre estos.
+  const A = (id, army, mission) => ({ id, army, mission });
+  const BUILTIN = [
+    { id: "rukkatrukka", name: "Rukkatrukka", createdAt: "2026-10-23T00:00:01Z", armies: [
+      A("c1", "Drukhari", "recon"), A("c2", "Guardia de la Muerte", "disrupt"), A("c3", "Orkos", "hold"),
+      A("c4", "Ligas de Votann", "assets"), A("c5", "Ángeles Sangrientos", "purge"), A("c6", "Imperio T'au", "assets") ] },
+    { id: "adeptus-sebtauis", name: "Adeptus Sebtauis", createdAt: "2026-10-23T00:00:02Z", armies: [
+      A("c1", "Ligas de Votann", "assets"), A("c2", "Astra Militarum", "purge"), A("c3", "Culto Genestealer", "disrupt"),
+      A("c4", "Caballeros Imperiales", "purge"), A("c5", "Drukhari", "recon"), A("c6", "Marines Espaciales del Caos", "hold") ] },
+    { id: "panda-parguela", name: "Panda Parguela", createdAt: "2026-10-23T00:00:03Z", armies: [
+      A("c1", "Templarios Negros", "hold"), A("c2", "Marines Espaciales del Caos", "disrupt"), A("c3", "Drukhari", "recon"),
+      A("c4", "Adeptus Custodes", "purge"), A("c5", "Ligas de Votann", "assets"), A("c6", "Devoradores de Mundos", "purge") ] },
+  ];
+  const ARMIES = ["Adepta Sororitas", "Adeptus Custodes", "Adeptus Mechanicus", "Agentes del Imperio", "Ángeles Oscuros", "Ángeles Sangrientos",
+    "Astra Militarum", "Caballeros Grises", "Caballeros Imperiales", "Caballeros del Caos", "Culto Genestealer", "Demonios del Caos", "Devoradores de Mundos",
+    "Drukhari", "Eldar", "Guardia de la Muerte", "Hijos del Emperador", "Imperio T'au", "Legiones Negras", "Ligas de Votann", "Lobos Espaciales",
+    "Marines Espaciales", "Marines Espaciales del Caos", "Mil Hijos", "Necrones", "Orkos", "Templarios Negros", "Tiránidos", "Ultramarines"];
+  const VALUES = [-3, -2, -1, 0, 1, 2, 3];
+  const MISSION_SLUG = { purge: "purge-the-foe", hold: "take-and-hold", assets: "priority-assets", disrupt: "disruption", recon: "reconnaissance" };
+
+  const $ = (id) => document.getElementById(id);
+  const state = { db: null, canWrite: true, rivalId: null, rows: {}, inv: {}, meta: {}, metaPending: {}, metaEdit: false, view: "team", me: null, saved: {} };
+  let unsubRows = null;
+  const pending = {};
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  };
+  state.me = store.get("wmg.me");
+  state.rivalId = store.get("wmg.rival");
+  state.view = store.get("wmg.view") || "team";
+  state.tourney = store.get("wmg.tourney") === "1";
+  // Jugadores ya elegidos en modo torneo, por rival: { t: [ids de Warhammelgas], r: [ids de ejércitos rivales] }. Se guarda solo en este dispositivo.
+  state.picks = (() => { try { return JSON.parse(store.get("wmg.picks") || "{}") || {}; } catch (e) { return {}; } })();
+
+  function allRivals() {
+    const byId = {};
+    for (const r of BUILTIN) byId[r.id] = r;
+    for (const id in state.saved) byId[id] = { id, ...state.saved[id] };
+    return Object.values(byId).filter((r) => !r.deleted && Array.isArray(r.armies))
+      .sort((a, b) => String(a.createdAt || "").localeCompare(String(b.createdAt || "")));
+  }
+
+  function setStatus(text, warn) { const s = $("status"); s.textContent = text; s.classList.toggle("warn", !!warn); s.classList.toggle("live", !warn); }
+  const show = (v) => (v > 0 ? "+" + v : String(v));
+  function color(v) {
+    if (v === 0) return "var(--zero)";
+    const pct = [0, 45, 72, 100][Math.abs(v)];
+    return `color-mix(in oklab, ${v < 0 ? "var(--neg)" : "var(--pos)"} ${pct}%, var(--zero))`;
+  }
+
+  function el(tag, attrs, ...kids) {
+    const n = document.createElement(tag);
+    for (const k in attrs || {}) {
+      if (k === "class") n.className = attrs[k];
+      else if (k.startsWith("on")) n.addEventListener(k.slice(2), attrs[k]);
+      else if (attrs[k] !== undefined && attrs[k] !== null) n.setAttribute(k, attrs[k]);
+    }
+    for (const c of kids) if (c !== null && c !== undefined) n.append(c);
+    return n;
+  }
+
+  function rival() {
+    const list = allRivals();
+    return list.find((r) => r.id === state.rivalId) || list[0] || null;
+  }
+  function selectRival(id) {
+    state.rivalId = id; store.set("wmg.rival", id);
+    subscribeRows(); renderTabs(); renderMatrix();
+  }
+
+  // ---- Celdas de las matrices de equipo ("rows") e inversa ("inverse") ----
+  function cellValue(kind, pid, cid) {
+    const key = kind + ":" + pid;
+    if (pending[key] && cid in pending[key].cells) return pending[key].cells[cid];
+    const src = kind === "rows" ? state.rows : state.inv;
+    const r = src[pid];
+    const v = r && r.cells ? r.cells[cid] : undefined;
+    return typeof v === "number" ? v : null;
+  }
+
+  function writeCell(kind, pid, cid, v) {
+    if (!state.db) return;
+    const key = kind + ":" + pid;
+    pending[key] = pending[key] || { cells: {} };
+    pending[key].cells[cid] = v;
+    renderMatrix();
+    clearTimeout(pending[key].t);
+    const rid = rival().id;
+    pending[key].t = setTimeout(async () => {
+      const src = kind === "rows" ? state.rows : state.inv;
+      const cells = Object.assign({}, (src[pid] && src[pid].cells) || {}, pending[key].cells);
+      for (const k in cells) if (cells[k] === null) delete cells[k];
+      delete pending[key];
+      try {
+        await state.db.doc(`matches/${rid}/${kind}/${pid}`).set({ cells, updatedAt: new Date().toISOString() });
+        setStatus("Guardado");
+      } catch (e) {
+        setStatus("No se pudo guardar. Revisa la conexión e inténtalo otra vez.", true);
+      }
+    }, 400);
+  }
+
+  // ---- Datos meta: diferencial de victorias facción contra facción ----
+  const norm = (s) => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  // Las correcciones a mano van por cruce exacto: ejército + misión contra ejército + misión.
+  const metaKey = (ours, theirs) => norm(ours.army) + "@" + (ours.mission || "") + "__" + norm(theirs.army) + "@" + (theirs.mission || "");
+  // ---- Matchup Matrix de stat-check.com (captura del 14/10/2026: meta Armageddon 1.04, partidas desde el 11/10/2026, sin mirrors) ----
+  // Diferencial de victorias de la facción de la fila contra la de la columna (-100 a 100). Vacío = sin datos.
+  const SC_DATE = "14/10/2026";
+  const SC_COLS = ["Adepta Sororitas", "Adeptus Custodes", "Adeptus Mechanicus", "Aeldari", "Astra Militarum", "Black Templars", "Blood Angels",
+    "Chaos Daemons", "Chaos Knights", "Chaos Space Marines", "Dark Angels", "Death Guard", "Deathwatch", "Drukhari", "Emperor's Children",
+    "Genestealer Cults", "Grey Knights", "Imperial Agents", "Imperial Knights", "Leagues of Votann", "Necrons", "No Faction", "Orks",
+    "Space Marines", "Space Wolves", "T'au Empire", "Thousand Sons", "Tyranids", "World Eaters"];
+  const _ = null;
+  const SC_ROWS = {
+    "Adeptus Custodes": [6.4, _, -0.6, 13.5, 19.0, _, -4.9, 34.0, 16.7, -13.8, -4.0, 7.4, 11.0, 4.5, 12.3, 18.0, -0.8, _, -6.8, 1.2, -9.1, _, -2.9, -11.3, 40.8, -0.8, 19.7, -12.4, -0.5],
+    "Astra Militarum": [-5.6, -19.0, _, -5.6, _, -24.8, 4.0, 19.8, -34.0, -6.3, -16.3, -16.5, -22.0, -3.0, -22.5, 41.0, -15.7, _, -13.7, -38.8, -18.7, _, -11.9, 2.2, 5.3, -15.2, 1.0, -24.7, 2.3],
+    "Grey Knights": [28.3, 0.8, -7.7, -22.0, 15.7, 3.7, -23.3, 23.5, -22.0, -0.8, -29.7, -25.0, 24.0, 5.8, -13.0, _, _, _, -4.3, -3.2, 23.2, _, 3.2, -1.1, -36.5, 0.0, -12.7, -5.2, 17.6],
+    "Orks": [1.9, 2.9, 10.6, 4.3, 11.9, 16.0, 2.0, 1.3, -7.8, 3.5, 5.5, 11.8, -23.3, 0.0, 1.1, 0.3, -3.2, _, -2.8, -1.0, 4.1, _, _, 14.0, -1.3, -2.3, 36.5, 4.0, -2.6],
+    "Space Wolves": [-58.0, -40.8, -28.0, -5.0, -5.3, _, -12.0, -3.8, -11.0, -7.9, -3.5, -16.5, -39.5, -10.0, -10.7, 60.0, 36.5, _, -5.1, 45.5, 24.4, _, 1.3, 7.2, _, -3.3, 6.0, -12.3, -6.8],
+    "Tyranids": [13.0, 12.4, 9.2, 3.7, 24.7, -50.0, -11.0, 12.3, -4.7, 21.8, -21.4, -11.6, -12.7, 10.4, 1.2, -5.0, 5.2, 5.3, -2.8, 6.5, 20.3, _, -4.0, -2.6, 12.3, -2.1, -12.2, _, 9.6],
+  };
+  // Nombre en castellano (o en inglés) -> nombre de stat-check
+  const ES_EN = {
+    "adepta-sororitas": "Adepta Sororitas", "hermanas-de-batalla": "Adepta Sororitas", "adeptus-custodes": "Adeptus Custodes", "custodes": "Adeptus Custodes",
+    "adeptus-mechanicus": "Adeptus Mechanicus", "eldar": "Aeldari", "aeldari": "Aeldari", "astra-militarum": "Astra Militarum", "guardia-imperial": "Astra Militarum",
+    "templarios-negros": "Black Templars", "angeles-sangrientos": "Blood Angels", "demonios-del-caos": "Chaos Daemons", "caballeros-del-caos": "Chaos Knights",
+    "marines-espaciales-del-caos": "Chaos Space Marines", "marines-del-caos": "Chaos Space Marines", "angeles-oscuros": "Dark Angels", "guardia-de-la-muerte": "Death Guard",
+    "guardia-de-la-muerte-negra": "Deathwatch", "deathwatch": "Deathwatch", "drukhari": "Drukhari", "hijos-del-emperador": "Emperor's Children",
+    "culto-genestealer": "Genestealer Cults", "cultos-genestealer": "Genestealer Cults", "caballeros-grises": "Grey Knights", "agentes-del-imperio": "Imperial Agents",
+    "caballeros-imperiales": "Imperial Knights", "ligas-de-votann": "Leagues of Votann", "necrones": "Necrons", "orkos": "Orks", "marines-espaciales": "Space Marines",
+    "ultramarines": "Space Marines", "lobos-espaciales": "Space Wolves", "imperio-t-au": "T'au Empire", "tau": "T'au Empire", "mil-hijos": "Thousand Sons",
+    "tiranidos": "Tyranids", "devoradores-de-mundos": "World Eaters",
+  };
+  for (const c of SC_COLS) ES_EN[norm(c)] = c;
+  const toEn = (name) => ES_EN[norm(name)] || null;
+  function statcheck(ours, theirs) {
+    const a = toEn(ours), b = toEn(theirs);
+    if (!a || !b) return null;
+    if (a === b) return 0;
+    const row = SC_ROWS[a];
+    if (row) { const v = row[SC_COLS.indexOf(b)]; if (typeof v === "number") return v; }
+    const back = SC_ROWS[b];
+    if (back) { const v = back[SC_COLS.indexOf(a)]; if (typeof v === "number") return -v; }
+    return null;
+  }
+  // Valor que se muestra: corrección manual guardada si la hay; si no, el dato de stat-check.
+  function metaValue(ours, theirs) {
+    const k = metaKey(ours, theirs);
+    const base = () => statcheck(ours.army, theirs.army);
+    if (k in state.metaPending) return state.metaPending[k] === null ? base() : state.metaPending[k];
+    const c = state.meta || {};
+    if (typeof c[k] === "number") return c[k];
+    const back = metaKey(theirs, ours);
+    if (typeof c[back] === "number") return -c[back];
+    return base();
+  }
+  const isManual = (ours, theirs) => { const c = state.meta || {}; return typeof c[metaKey(ours, theirs)] === "number" || typeof c[metaKey(theirs, ours)] === "number"; };
+  const fmt1 = (n) => { const r = Math.round(n * 10) / 10; return (r > 0 ? "+" : "") + String(r).replace(".", ","); };
+  function diffToScore(d) {
+    if (d >= 30) return 3; if (d >= 15) return 2; if (d >= 5) return 1;
+    if (d > -5) return 0; if (d > -15) return -1; if (d > -30) return -2; return -3;
+  }
+  let metaTimer = null;
+  function writeMeta(ours, theirs, v) {
+    if (!state.db) return;
+    state.metaPending[metaKey(ours, theirs)] = v;
+    clearTimeout(metaTimer);
+    metaTimer = setTimeout(async () => {
+      const cells = Object.assign({}, state.meta || {}, state.metaPending);
+      for (const k in cells) if (cells[k] === null || Number.isNaN(cells[k])) delete cells[k];
+      state.metaPending = {};
+      try {
+        await state.db.doc("meta/winrates").set({ cells, updatedAt: new Date().toISOString() });
+        setStatus("Guardado");
+      } catch (e) { setStatus("No se pudo guardar. Revisa la conexión e inténtalo otra vez.", true); }
+    }, 600);
+  }
+
+  // ---- Modo torneo ----
+  function picksFor(rid) { return state.picks[rid] || (state.picks[rid] = { t: [], r: [] }); }
+  function isOff(side, id) { const r = rival(); return !!(state.tourney && r && picksFor(r.id)[side].includes(id)); }
+  function togglePick(side, id) {
+    const p = picksFor(rival().id), i = p[side].indexOf(id);
+    if (i >= 0) p[side].splice(i, 1); else p[side].push(id);
+    store.set("wmg.picks", JSON.stringify(state.picks)); renderMatrix();
+  }
+  // Cabecera que en modo torneo sirve para marcar (o desmarcar) un jugador como ya elegido.
+  function pickHead(side, a, cls, name) {
+    const off = isOff(side, a.id);
+    return el("button", { type: "button", class: "pick-btn" + (off ? " off-h" : ""), "aria-pressed": String(off),
+      title: off ? `Recuperar ${name}` : `Marcar ${name} como ya elegido`, onclick: () => togglePick(side, a.id) }, armyHead(a, cls));
+  }
+  function setTourney(on) {
+    state.tourney = on; store.set("wmg.tourney", on ? "1" : "");
+    document.body.classList.toggle("tourney", on);
+    if (on) { closeEditor(); if (armyOpen) closeArmy(); state.metaEdit = false; window.scrollTo(0, 0); }
+    renderMatrix();
+  }
+  $("t-enter").addEventListener("click", () => setTourney(true));
+  $("t-exit").addEventListener("click", () => setTourney(false));
+  $("t-reset").addEventListener("click", () => { const r = rival(); if (!r) return; state.picks[r.id] = { t: [], r: [] }; store.set("wmg.picks", JSON.stringify(state.picks)); renderMatrix(); });
+
+  function renderTabs() {
+    const t = $("tabs"); t.replaceChildren();
+    const cur = rival();
+    for (const r of allRivals()) {
+      t.append(el("button", { class: "tab", type: "button", role: "tab", "aria-selected": String(cur && r.id === cur.id),
+        onclick: () => { closeEditor(); selectRival(r.id); } }, r.name));
+    }
+    t.append(el("button", { class: "tab add", type: "button", title: "Nueva matriz", "aria-label": "Nueva matriz", onclick: () => openEditor(null) }, "+"));
+  }
+
+  function renderMe() {
+    const me = $("me-sel");
+    me.replaceChildren(el("option", { value: "" }, "Solo mirar"));
+    for (const p of TEAM) me.append(el("option", { value: p.id }, `${p.army} (${p.player})`));
+    me.value = TEAM.some((p) => p.id === state.me) ? state.me : "";
+  }
+
+  const CHEAT = [
+    [3, "Paliza a favor", "17-3 a 20-0", "Ganas por más de 35", "5"],
+    [2, "Victoria clara", "14-6 a 16-4", "Ganas por 21 a 35", "4"],
+    [1, "Victoria ajustada", "12-8 a 13-7", "Ganas por 11 a 20", "3.5"],
+    [0, "Igualada", "9-11 a 11-9", "De perder por 10 a ganar por 10", "3"],
+    [-1, "Derrota ajustada", "7-13 a 8-12", "Pierdes por 11 a 20", "2.5"],
+    [-2, "Derrota clara", "4-16 a 6-14", "Pierdes por 21 a 35", "2"],
+    [-3, "Paliza en contra", "0-20 a 3-17", "Pierdes por más de 35", "1"],
+  ];
+  function renderCheat() {
+    const tb = $("cheat-body"); tb.replaceChildren();
+    for (const [v, what, res, vp, est] of CHEAT) {
+      const chip = el("span", { class: "vchip" }, show(v)); chip.style.background = color(v);
+      if (Math.abs(v) <= 1) chip.style.color = "var(--fg)";
+      tb.append(el("tr", {}, el("td", {}, chip), el("td", {}, what), el("td", { class: "num" }, res), el("td", {}, vp), el("td", { class: "num" }, est)));
+    }
+  }
+
+  function renderLegend() {
+    const lg = $("legend"); lg.replaceChildren();
+    for (const k in MISSIONS) {
+      const d = el("span", { class: "dot" }); d.style.background = `var(--m-${k})`;
+      lg.append(el("span", { class: "chip" }, d, MISSIONS[k]));
+    }
+    const sc = el("span", { class: "scale", "aria-label": "Escala de -3 a 3" });
+    for (const v of VALUES) { const i = el("i", {}, show(v)); i.style.background = color(v); if (Math.abs(v) <= 1) i.style.color = "var(--fg)"; sc.append(i); }
+    lg.append(el("span", { class: "chip" }, "Puntuación", sc));
+  }
+
+  const VIEWS = [
+    { id: "team", label: "Equipo" },
+    { id: "meta", label: "Meta (stat-check)" },
+    { id: "inverse", label: "Matriz inversa" },
+  ];
+
+  function rivalHead(r, a, cls) {
+    const b = el("button", { type: "button", class: "army-btn", title: `Ver la lista de ${a.army}`, onclick: () => openArmy(r.id, a.id) }, armyHead(a, cls));
+    if (a.list) b.firstChild.append(el("i", { class: "has-list", "aria-label": "Tiene lista" }, "📜"));
+    return b;
+  }
+  function armyHead(a, cls) {
+    return el("div", { class: "army " + cls + " " + (a.mission || "none"), title: a.player ? `${a.player} · ${MISSIONS[a.mission] || ""}` : undefined },
+      el("b", {}, a.army), el("span", {}, a.mission ? MISSIONS[a.mission] : "Misión ?"));
+  }
+  function scoreSelect(id, label, v, onChange) {
+    const sel = el("select", { id, "aria-label": label });
+    sel.append(el("option", { value: "" }, "–"));
+    for (const n of [3, 2, 1, 0, -1, -2, -3]) sel.append(el("option", { value: String(n) }, show(n)));
+    sel.value = v === null ? "" : String(v);
+    sel.addEventListener("change", () => onChange(sel.value === "" ? null : Number(sel.value)));
+    return sel;
+  }
+  function paint(td, v) {
+    td.className = "cell" + (v !== null ? " filled v" + Math.abs(v) : "");
+    if (v !== null) td.style.background = color(v);
+  }
+
+  function renderMatrix() {
+    const area = $("matrix-area");
+    const ae = document.activeElement;
+    const focusId = ae && ae.id && area.contains(ae) ? ae.id : null;
+    const r = rival();
+    if (!r) {
+      area.replaceChildren(el("div", { class: "empty" }, el("h2", {}, "No hay ninguna matriz"),
+        el("p", {}, "Pulsa «+» para crear la matriz contra un equipo rival.")));
+      return;
+    }
+    const view = VIEWS.some((v) => v.id === state.view) ? state.view : "team";
+    const seg = el("div", { class: "views", role: "tablist", "aria-label": "Tipo de matriz" });
+    for (const v of VIEWS) seg.append(el("button", { type: "button", role: "tab", class: "view", "aria-selected": String(v.id === view),
+      onclick: () => { state.view = v.id; store.set("wmg.view", v.id); state.metaEdit = false; renderMatrix(); } }, v.label));
+
+    const titles = { team: "Contra " + r.name, meta: "Meta: Warhammelgas contra " + r.name, inverse: "Matriz inversa: " + r.name + " contra Warhammelgas" };
+    const headBar = el("div", { class: "matrix-head" }, el("h2", {}, titles[view]),
+      state.tourney ? null : el("button", { type: "button", class: "ghost", onclick: () => openEditor(r) }, "Editar equipo rival"));
+    $("t-sub").textContent = "contra " + r.name;
+
+    let table, foot;
+    if (view === "team") [table, foot] = teamTable(r);
+    else if (view === "inverse") [table, foot] = inverseTable(r);
+    else [table, foot] = metaTable(r);
+
+    if (state.tourney) foot = null;
+    const tip = state.tourney ? el("p", { class: "t-tip" }, "👉 Cuando un jugador ya ha sido elegido para una partida, toca su nombre.") : null;
+    area.replaceChildren(el("div", { class: "views-bar" }, seg, tip), headBar, el("div", { class: "table-scroll" }, table), ...(foot ? [foot] : []));
+    if (focusId && $(focusId)) $(focusId).focus();
+  }
+
+  function teamTable(r) {
+    const head = el("tr", {}, el("th", { class: "corner" }, "Warhammelgas \\ " + r.name));
+    r.armies.forEach((a) => head.append(el("th", { scope: "col" }, state.tourney ? pickHead("r", a, "col", a.army) : rivalHead(r, a, "col"))));
+    head.append(el("th", { class: "sum", scope: "col" }, "Total"));
+    const body = el("tbody");
+    const colSums = r.armies.map(() => null);
+    let filled = 0;
+    for (const p of TEAM) {
+      const mine = p.id === state.me && !state.tourney;
+      const rowOff = isOff("t", p.id);
+      const tr = el("tr", { class: mine ? "mine" : "" }, el("th", { scope: "row" }, state.tourney ? pickHead("t", p, "", p.army) : armyHead(p, "")));
+      let sum = null, count = 0;
+      r.armies.forEach((a, i) => {
+        const v = cellValue("rows", p.id, a.id);
+        if (v !== null) { sum = (sum || 0) + v; count++; colSums[i] = (colSums[i] || 0) + v; }
+        const td = el("td"); paint(td, v);
+        if (rowOff || isOff("r", a.id)) td.classList.add("off");
+        if (mine && state.canWrite && state.db) td.append(scoreSelect(`c-${r.id}-${p.id}-${a.id}`, `${p.army} contra ${a.army}`, v, (nv) => writeCell("rows", p.id, a.id, nv)));
+        else td.append(v === null ? "–" : show(v));
+        tr.append(td);
+      });
+      if (count === r.armies.length) filled++;
+      tr.append(el("td", { class: "sum" + (rowOff ? " off" : "") }, sum === null ? "" : show(sum)));
+      body.append(tr);
+    }
+    const ft = el("tr", {}, el("th", {}, "Total"));
+    colSums.forEach((s, i) => ft.append(el("td", { class: "sum" + (isOff("r", r.armies[i].id) ? " off" : "") }, s === null ? "" : show(s))));
+    ft.append(el("td"));
+    let hint = !state.db ? "La base de datos no está conectada: se ve la matriz pero no se puede guardar."
+      : !state.me ? "Elige tu ejército en «Soy» para rellenar tu fila." : "Toca las casillas de tu fila (la marcada) y elige de -3 a +3.";
+    return [el("table", {}, el("thead", {}, head), body, el("tfoot", {}, ft)),
+      el("p", { class: "foot" }, `${filled} de ${TEAM.length} filas completas contra ${r.name}. ${hint}`)];
+  }
+
+  function inverseTable(r) {
+    const head = el("tr", {}, el("th", { class: "corner" }, r.name + " \\ Warhammelgas"));
+    const meI = state.tourney ? null : state.me;
+    TEAM.forEach((p) => head.append(el("th", { scope: "col", class: p.id === meI ? "mine-col" : "" }, state.tourney ? pickHead("t", p, "col", p.army) : armyHead(p, "col"))));
+    head.append(el("th", { class: "sum", scope: "col" }, "Total"));
+    const body = el("tbody");
+    const colSums = TEAM.map(() => null);
+    for (const a of r.armies) {
+      const rowOff = isOff("r", a.id);
+      const tr = el("tr", {}, el("th", { scope: "row" }, state.tourney ? pickHead("r", a, "", a.army) : rivalHead(r, a, "")));
+      let sum = null;
+      TEAM.forEach((p, i) => {
+        const v = cellValue("inverse", p.id, a.id);
+        if (v !== null) { sum = (sum || 0) + v; colSums[i] = (colSums[i] || 0) + v; }
+        const td = el("td"); paint(td, v);
+        if (p.id === meI) td.classList.add("mine-cell");
+        if (rowOff || isOff("t", p.id)) td.classList.add("off");
+        if (p.id === meI && state.canWrite && state.db) td.append(scoreSelect(`i-${r.id}-${p.id}-${a.id}`, `${a.army} contra ${p.army}`, v, (nv) => writeCell("inverse", p.id, a.id, nv)));
+        else td.append(v === null ? "–" : show(v));
+        tr.append(td);
+      });
+      tr.append(el("td", { class: "sum" }, sum === null ? "" : show(sum)));
+      body.append(tr);
+    }
+    const ft = el("tr", {}, el("th", {}, "Total"));
+    for (const s of colSums) ft.append(el("td", { class: "sum" }, s === null ? "" : show(s)));
+    ft.append(el("td"));
+    const filled = TEAM.filter((p) => r.armies.every((a) => cellValue("inverse", p.id, a.id) !== null)).length;
+    let hint = !state.db ? "La base de datos no está conectada: se ve la matriz pero no se puede guardar."
+      : !state.me ? "Elige tu ejército en «Soy» para rellenar tu columna." : "Rellena tu columna (la marcada).";
+    return [el("table", {}, el("thead", {}, head), body, el("tfoot", {}, ft)),
+      el("p", { class: "foot" }, `Puntúa desde el punto de vista del rival: +3 es una paliza a favor del rival. ${filled} de ${TEAM.length} columnas completas. ${hint}`)];
+  }
+
+  function metaTable(r) {
+    const editing = state.metaEdit && state.db && !state.tourney;
+    const head = el("tr", {}, el("th", { class: "corner" }, "Warhammelgas \\ " + r.name));
+    r.armies.forEach((a) => head.append(el("th", { scope: "col" }, state.tourney ? pickHead("r", a, "col", a.army) : rivalHead(r, a, "col"))));
+    head.append(el("th", { class: "sum", scope: "col" }, "Total"));
+    const body = el("tbody");
+    const cols = r.armies.map(() => []);
+    let known = 0;
+    for (const p of TEAM) {
+      const rowOff = isOff("t", p.id);
+      const tr = el("tr", {}, el("th", { scope: "row" }, state.tourney ? pickHead("t", p, "", p.army) : armyHead(p, "")));
+      const vals = [];
+      r.armies.forEach((a, i) => {
+        const w = metaValue(p, a);
+        const sc = w === null ? null : diffToScore(w);
+        if (w !== null) { vals.push(sc); cols[i].push(sc); known++; }
+        const td = el("td"); paint(td, sc); td.classList.add("meta");
+        if (rowOff || isOff("r", a.id)) td.classList.add("off");
+        if (editing) {
+          const inp = el("input", { type: "number", min: "-100", max: "100", step: "0.1", inputmode: "decimal", id: `m-${p.id}-${a.id}`,
+            value: w === null ? "" : String(w), "aria-label": `Diferencial de ${p.army} contra ${a.army}`, placeholder: "±" });
+          inp.addEventListener("change", () => {
+            const n = inp.value === "" ? null : Math.max(-100, Math.min(100, Number(inp.value.replace(",", "."))));
+            writeMeta(p, a, n);
+          });
+          td.append(inp);
+        } else if (w === null) td.append("–");
+        else {
+          td.append(el("span", { class: "pct" }, show(sc)), el("span", { class: "msc" }, "(" + (w > 0 ? "+" : "") + String(w).replace(".", ",") + ")"));
+          if (isManual(p, a)) { td.title = "Ajustado por el equipo para este cruce de misiones"; td.classList.add("adj"); }
+        }
+        tr.append(td);
+      });
+      const avg = vals.length ? vals.reduce((x, y) => x + y, 0) / vals.length : null;
+      tr.append(el("td", { class: "sum" }, vals.length ? show(vals.reduce((x, y) => x + y, 0)) : ""));
+      body.append(tr);
+    }
+    const ft = el("tr", {}, el("th", {}, "Total"));
+    for (const c of cols) ft.append(el("td", { class: "sum" }, c.length ? show(c.reduce((x, y) => x + y, 0)) : ""));
+    ft.append(el("td"));
+    const total = TEAM.length * r.armies.length;
+    const info = el("div", { class: "meta-info" },
+      el("p", {}, "Datos de la Matchup Matrix de ",
+        el("a", { href: "https://www.stat-check.com/the-meta", target: "_blank", rel: "noopener" }, "stat-check.com/the-meta"),
+        ` (captura del ${SC_DATE}). El número grande es nuestra escala de -3 a +3; el pequeño es el valor original de stat-check, el diferencial de victorias de nuestra facción contra la rival (+10 quiere decir que gana unos 10 puntos de porcentaje más de lo que pierde). La conversión es: +30 o más = +3, de +15 a +30 = +2, de +5 a +15 = +1, entre -5 y +5 = 0, y lo mismo en negativo. Un mirror (misma facción) cuenta como 0.`),
+      el("p", {}, `Hay datos para ${known} de ${total} emparejamientos. Ojo: stat-check mezcla todas las misiones (es facción contra facción en general). Pulsa «Editar datos meta» para ajustar una casilla a ese cruce exacto de misiones: el ajuste solo cuenta para ese ejército con esa misión contra ese rival con esa misión, y la casilla queda marcada con ✎.`),
+      state.db ? el("button", { type: "button", class: editing ? "primary" : "ghost", onclick: () => { state.metaEdit = !state.metaEdit; renderMatrix(); } },
+        editing ? "Terminar de editar" : "Editar datos meta") : null);
+    return [el("table", {}, el("thead", {}, head), body, el("tfoot", {}, ft)), info];
+  }
+
+  function subscribeRows() {
+    for (const u of unsubRows || []) u();
+    unsubRows = null;
+    state.rows = {}; state.inv = {};
+    const r = rival();
+    if (!state.db || !r) return;
+    const err = () => setStatus("Se perdió la conexión en directo. Recarga la página.", true);
+    unsubRows = [
+      state.db.collection(`matches/${r.id}/rows`).onSnapshot((snap) => {
+        const rows = {}; for (const d of snap.docs) rows[d.id] = d.data();
+        state.rows = rows; renderMatrix();
+      }, err),
+      state.db.collection(`matches/${r.id}/inverse`).onSnapshot((snap) => {
+        const rows = {}; for (const d of snap.docs) rows[d.id] = d.data();
+        state.inv = rows; renderMatrix();
+      }, err),
+    ];
+  }
+
+  $("me-sel").addEventListener("change", (e) => { state.me = e.target.value || null; store.set("wmg.me", state.me || ""); renderMatrix(); });
+
+  // ---- Editor de equipo rival ----
+  let editing = null; // { id, isNew, createdAt }
+  function missionSelect(id, value) {
+    const sel = el("select", { id, "aria-label": "Misión" });
+    sel.append(el("option", { value: "" }, "Misión…"));
+    for (const k in MISSIONS) sel.append(el("option", { value: k }, MISSIONS[k]));
+    sel.value = value || "";
+    const paint = () => { sel.className = "msel " + (sel.value || "none"); };
+    sel.addEventListener("change", paint); paint();
+    return sel;
+  }
+  function armyRow(a) {
+    const id = a.id || "a" + Math.random().toString(36).slice(2, 8);
+    const li = el("li", { "data-id": id },
+      el("input", { type: "text", id: "ea-" + id, value: a.army || "", placeholder: "Ejército", list: "army-list", "aria-label": "Ejército rival" }),
+      missionSelect("em-" + id, a.mission),
+      el("button", { type: "button", class: "x", title: "Quitar", "aria-label": "Quitar ejército", onclick: () => li.remove() }, "✕"));
+    return li;
+  }
+  function openEditor(r) {
+    editing = r ? { id: r.id, isNew: false, createdAt: r.createdAt, lists: Object.fromEntries(r.armies.map((x) => [x.id, x.list || ""])) } : { id: "r" + Date.now().toString(36), isNew: true, createdAt: new Date().toISOString() };
+    $("ed-title").textContent = r ? "Editar " + r.name : "Nueva matriz";
+    $("ed-name").value = r ? r.name : "";
+    const list = $("ed-armies"); list.replaceChildren();
+    const armies = r ? r.armies : Array.from({ length: 6 }, () => ({}));
+    for (const a of armies) list.append(armyRow(a));
+    $("ed-delete").hidden = !r; $("ed-delete").textContent = "Borrar matriz";
+    $("ed-msg").textContent = state.db ? "" : "Sin base de datos conectada: no se podrá guardar.";
+    $("editor").hidden = false;
+    $("ed-name").focus();
+  }
+  function closeEditor() { $("editor").hidden = true; editing = null; }
+
+  $("ed-add").addEventListener("click", () => { $("ed-armies").append(armyRow({})); });
+  $("ed-cancel").addEventListener("click", closeEditor);
+  $("editor").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!editing) return;
+    const name = $("ed-name").value.trim();
+    const armies = [...$("ed-armies").children].map((li) => {
+      const id = li.getAttribute("data-id");
+      const list = (editing.lists && editing.lists[id]) || "";
+      return list ? { id, army: $("ea-" + id).value.trim(), mission: $("em-" + id).value || null, list } : { id, army: $("ea-" + id).value.trim(), mission: $("em-" + id).value || null };
+    }).filter((a) => a.army);
+    if (!name) { $("ed-msg").textContent = "Pon el nombre del equipo rival."; $("ed-name").focus(); return; }
+    if (!armies.length) { $("ed-msg").textContent = "Añade al menos un ejército rival."; return; }
+    if (!state.db) { $("ed-msg").textContent = "Sin base de datos conectada: no se puede guardar."; return; }
+    const id = editing.id;
+    try {
+      $("ed-save").disabled = true;
+      await state.db.doc(`rivals/${id}`).set({ name, armies, createdAt: editing.createdAt, deleted: false, updatedAt: new Date().toISOString() });
+      state.saved[id] = { name, armies, createdAt: editing.createdAt, deleted: false };
+      closeEditor(); selectRival(id); setStatus("Guardado");
+    } catch (err) { $("ed-msg").textContent = "No se pudo guardar. Revisa la conexión e inténtalo otra vez."; }
+    finally { $("ed-save").disabled = false; }
+  });
+  $("ed-delete").addEventListener("click", async () => {
+    const b = $("ed-delete");
+    if (b.textContent !== "¿Seguro? Pulsa otra vez") { b.textContent = "¿Seguro? Pulsa otra vez"; return; }
+    if (!editing || !state.db) return;
+    const r = rival();
+    try {
+      await state.db.doc(`rivals/${editing.id}`).set({ name: r ? r.name : "", armies: [], createdAt: editing.createdAt, deleted: true, updatedAt: new Date().toISOString() });
+      state.saved[editing.id] = { deleted: true, armies: [] };
+      closeEditor(); const first = allRivals()[0]; selectRival(first ? first.id : null); setStatus("Matriz borrada");
+    } catch (err) { $("ed-msg").textContent = "No se pudo borrar. Revisa la conexión."; }
+  });
+
+  // ---- Ventana con la lista de un ejército rival ----
+  let armyOpen = null; // { rid, aid }
+  function openArmy(rid, aid) { armyOpen = { rid, aid, edit: false }; renderArmy(); }
+  function closeArmy() { armyOpen = null; $("army-modal").hidden = true; }
+  function renderArmy() {
+    const m = $("army-modal");
+    if (!armyOpen) { m.hidden = true; return; }
+    const r = allRivals().find((x) => x.id === armyOpen.rid);
+    const a = r && r.armies.find((x) => x.id === armyOpen.aid);
+    if (!a) { closeArmy(); return; }
+    const box = $("army-box"); box.replaceChildren(); box.classList.remove("wide");
+    box.append(el("div", { class: "army-top" }, armyHead(a, "big"),
+      el("button", { type: "button", class: "x", "aria-label": "Cerrar", onclick: closeArmy }, "✕")));
+    box.append(el("p", { class: "army-team" }, r.name));
+    if (armyOpen.edit) {
+      const ta = el("textarea", { id: "army-list-text", rows: "16", placeholder: "Pega aquí la lista (por ejemplo copiada de Best Coast Pairings o de la app de Warhammer)" });
+      ta.value = a.list || "";
+      const msg = el("p", { class: "ed-msg", role: "status" });
+      box.append(ta, msg, el("div", { class: "ed-actions" },
+        el("button", { type: "button", class: "primary", onclick: async () => {
+          if (!state.db) { msg.textContent = "Sin base de datos conectada: no se puede guardar."; return; }
+          const armies = r.armies.map((x) => {
+            const y = { id: x.id, army: x.army, mission: x.mission || null };
+            const list = x.id === a.id ? ta.value.trim() : (x.list || "");
+            if (list) y.list = list;
+            return y;
+          });
+          try {
+            await state.db.doc(`rivals/${r.id}`).set({ name: r.name, armies, createdAt: r.createdAt || new Date().toISOString(), deleted: false, updatedAt: new Date().toISOString() });
+            state.saved[r.id] = { name: r.name, armies, createdAt: r.createdAt, deleted: false };
+            armyOpen.edit = false; renderArmy(); renderMatrix(); setStatus("Guardado");
+          } catch (e) { msg.textContent = "No se pudo guardar. Revisa la conexión e inténtalo otra vez."; }
+        } }, "Guardar lista"),
+        el("button", { type: "button", onclick: () => { armyOpen.edit = false; renderArmy(); } }, "Cancelar")));
+      m.hidden = false; ta.focus();
+      return;
+    }
+    box.append(el("h3", { class: "sec" }, "Lista"));
+    if (a.list) box.append(el("pre", { class: "army-list" }, a.list));
+    else box.append(el("p", { class: "army-empty" }, "Todavía no hay lista para este ejército."));
+    box.append(el("div", { class: "ed-actions" },
+      el("button", { type: "button", class: "primary", onclick: () => { armyOpen.edit = true; renderArmy(); } }, a.list ? "Editar lista" : "Añadir lista"),
+      el("button", { type: "button", onclick: () => { closeArmy(); openEditor(r); } }, "Editar ejército y misión"),
+      el("button", { type: "button", onclick: closeArmy }, "Cerrar")));
+    m.hidden = false;
+  }
+  // ---- Mapas: 3 despliegues recomendados para cada par de misiones (imágenes en la carpeta mapas/) ----
+  const MISSION_ORDER = ["purge", "hold", "assets", "disrupt", "recon"];
+  function mapFile(a, b, n) {
+    const [x, y] = [a, b].sort((p, q) => MISSION_ORDER.indexOf(p) - MISSION_ORDER.indexOf(q));
+    return `mapas/${MISSION_SLUG[x]}__${MISSION_SLUG[y]}__${n}.webp`;
+  }
+  let viewer = null; // { a, b, n }
+  function renderMaps() {
+    const a = $("map-a").value, b = $("map-b").value;
+    store.set("wmg.maps", a + "|" + b);
+    const grid = $("maps-grid"); grid.replaceChildren();
+    for (let n = 1; n <= 3; n++) {
+      const fig = el("figure", { class: "map-card loading" });
+      const img = el("img", { alt: `Mapa ${n}: ${MISSIONS[a]} contra ${MISSIONS[b]}`, loading: "lazy", src: mapFile(a, b, n) });
+      img.addEventListener("load", () => fig.classList.remove("loading"));
+      img.addEventListener("error", () => { fig.classList.remove("loading"); img.replaceWith(el("div", { class: "map-missing" }, "Mapa pendiente de subir")); });
+      fig.append(el("button", { type: "button", class: "map-btn", "aria-label": `Ver mapa ${n} a pantalla completa`, onclick: () => openViewer(a, b, n) }, img),
+        el("figcaption", {}, el("b", {}, "Mapa " + n), el("span", {}, `${MISSIONS[a]} contra ${MISSIONS[b]}`)));
+      grid.append(fig);
+    }
+  }
+  function openViewer(a, b, n) {
+    viewer = { a, b, n };
+    const v = $("map-viewer");
+    v.hidden = false;
+    document.body.classList.add("no-scroll");
+    renderViewer();
+    try { if (v.requestFullscreen && !document.fullscreenElement) v.requestFullscreen().catch(() => {}); } catch (e) {}
+    $("mv-close").focus();
+  }
+  function closeViewer() {
+    viewer = null;
+    $("map-viewer").hidden = true;
+    document.body.classList.remove("no-scroll");
+    try { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); } catch (e) {}
+  }
+  function renderViewer() {
+    if (!viewer) return;
+    const { a, b, n } = viewer;
+    $("mv-title").textContent = `Mapa ${n} de 3 · ${MISSIONS[a]} contra ${MISSIONS[b]}`;
+    const img = $("mv-img");
+    img.hidden = false; $("mv-missing").hidden = true;
+    img.onerror = () => { img.hidden = true; $("mv-missing").hidden = false; };
+    img.src = mapFile(a, b, n);
+    img.alt = `Mapa ${n}: ${MISSIONS[a]} contra ${MISSIONS[b]}`;
+  }
+  function stepViewer(d) { if (!viewer) return; viewer.n = ((viewer.n - 1 + d + 3) % 3) + 1; renderViewer(); }
+  $("mv-close").addEventListener("click", closeViewer);
+  $("mv-prev").addEventListener("click", (e) => { e.stopPropagation(); stepViewer(-1); });
+  $("mv-next").addEventListener("click", (e) => { e.stopPropagation(); stepViewer(1); });
+  $("map-viewer").addEventListener("click", (e) => { if (e.target.id === "map-viewer" || e.target.id === "mv-stage") closeViewer(); });
+  document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && viewer) closeViewer(); });
+  document.addEventListener("keydown", (e) => {
+    if (!viewer) return;
+    if (e.key === "Escape") closeViewer();
+    else if (e.key === "ArrowRight") stepViewer(1);
+    else if (e.key === "ArrowLeft") stepViewer(-1);
+  });
+  // Deslizar el dedo: a los lados cambia de mapa, hacia abajo cierra
+  let touch = null;
+  $("map-viewer").addEventListener("touchstart", (e) => { if (e.touches.length === 1) touch = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }, { passive: true });
+  $("map-viewer").addEventListener("touchend", (e) => {
+    if (!touch || !viewer) return;
+    const dx = e.changedTouches[0].clientX - touch.x, dy = e.changedTouches[0].clientY - touch.y; touch = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) stepViewer(dx < 0 ? 1 : -1);
+    else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) closeViewer();
+  });
+  for (const id of ["map-a", "map-b"]) {
+    const sel = $(id);
+    for (const k in MISSIONS) sel.append(el("option", { value: k }, MISSIONS[k]));
+    sel.addEventListener("change", renderMaps);
+  }
+  { const saved = (store.get("wmg.maps") || "").split("|"); if (MISSIONS[saved[0]]) $("map-a").value = saved[0]; if (MISSIONS[saved[1]]) $("map-b").value = saved[1]; }
+  renderMaps();
+
+  $("army-modal").addEventListener("click", (e) => { if (e.target.id === "army-modal") closeArmy(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && armyOpen) closeArmy(); });
+
+  function startLive() {
+    state.db.doc("meta/winrates").onSnapshot((d) => {
+      state.meta = (d.exists && d.data().cells) || {};
+      renderMatrix();
+    }, () => setStatus("Se perdió la conexión en directo. Recarga la página.", true));
+    state.db.collection("rivals").onSnapshot((snap) => {
+      const saved = {};
+      for (const d of snap.docs) saved[d.id] = d.data();
+      const before = rival() && rival().id;
+      state.saved = saved;
+      const after = rival() && rival().id;
+      renderTabs();
+      if (before !== after || !unsubRows) subscribeRows(); else renderMatrix();
+      if (armyOpen && !armyOpen.edit && !armyOpen.map) renderArmy();
+    }, () => setStatus("Se perdió la conexión en directo. Recarga la página.", true));
+  }
+
+  const dl = el("datalist", { id: "army-list" });
+  for (const a of ARMIES) dl.append(el("option", { value: a }));
+  document.body.append(dl);
+
+  document.body.classList.toggle("tourney", state.tourney);
+  if (!window.firebase) { state.meta = { "orkos@purge__drukhari@recon": -20 }; const vs=[3,2,1,0,-1,-2,-3]; let k=0; for (const p of TEAM) { state.rows[p.id]={cells:{}}; for (let i=1;i<=6;i++) state.rows[p.id].cells["c"+i]=vs[(k++*5)%7]; } }
+  renderTabs(); renderMe(); renderLegend(); renderCheat(); renderMatrix();
+
+  (function connect() {
+    if (!window.firebase || !FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey.startsWith("PEGA")) { setStatus("Vista previa: no guarda cambios", true); return; }
+    try {
+      firebase.initializeApp(FIREBASE_CONFIG);
+      state.db = firebase.firestore();
+    } catch (e) { setStatus("La configuración de Firebase no es válida", true); return; }
+    setStatus("En directo");
+    startLive();
+  })();
+})();
+</script>
+</body>
+</html>
