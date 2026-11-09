@@ -3,101 +3,227 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#141414">
-<title>Warhammelgas 40k</title>
+<meta name="theme-color" content="#0b0907">
+<title>Herramientas de Guerra · Warhammelgas</title>
 <link rel="icon" href="img/icono.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Cinzel+Decorative:wght@700;900&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
 <style>
+/* Grimdark: negro cálido, oro viejo y rojo sangre. Mismo aspecto en claro y oscuro a propósito (es una portada). */
 :root{
-  --paper:#f1f0ed; --sheet:#fff; --ink:#16171a; --muted:#6b6a66; --rule:#e2e1dc; --grey:#ecebe7;
-  --red:#d01530; --red2:#a80d25;
+  --bg:#0b0907; --bg2:#15100b; --panel:#14100c; --panel2:#1c1610; --line:#3d301d; --line2:#2a2115;
+  --fg:#f1e9d6; --muted:#b0a48b; --gold:#d4a63a; --gold2:#f3d27a; --red:#c8102e; --red2:#7d0a1c;
+  --f-goth:"Cinzel",Georgia,serif; --f-deco:"Cinzel Decorative","Cinzel",Georgia,serif;
   --f-display:"Barlow Condensed","Arial Narrow",sans-serif; --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --shadow:0 0 0 1px rgba(20,20,22,.05),0 6px 16px -6px rgba(20,20,22,.1),0 24px 48px -24px rgba(20,20,22,.2);
-  color-scheme:light;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#121418; --sheet:#1b1f25; --ink:#e9e7e2; --muted:#9aa0a7; --rule:#2b3139; --grey:#252a31;
-  --shadow:0 0 0 1px rgba(255,255,255,.06),0 16px 36px -16px rgba(0,0,0,.6); color-scheme:dark}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}}
+:root[data-theme="dark"]{color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:var(--paper);background-image:radial-gradient(1100px 500px at 85% -120px,rgba(208,21,48,.14),transparent 70%);color:var(--ink);font:16px/1.5 var(--f-body)}
-.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
-header.bar{background:radial-gradient(700px 240px at 80% 0,rgba(208,21,48,.38),transparent 70%),linear-gradient(180deg,#17181b,#0e0f11);color:#fff}
-header.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:20px}
-.brand{display:flex;align-items:center;gap:14px}
-.brand .t{font-family:var(--f-display);font-weight:700;font-size:38px;line-height:.95;text-transform:uppercase}
-.brand .t em{font-style:normal;color:#ff3550}
-.brand small{display:block;font-weight:600;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#8f8d88;margin-top:6px}
-.who{display:flex;align-items:center;gap:14px;font-weight:500;color:#cfcdc7}
-.who button{all:unset;cursor:pointer;color:#ff8d9b;font-weight:600}.who button:hover{text-decoration:underline}
-main.wrap{padding-block:32px 64px}
-h1{font-family:var(--f-display);font-weight:700;font-size:clamp(30px,5vw,42px);line-height:1;text-transform:uppercase;margin:0 0 6px}
-.lead{color:var(--muted);margin:0 0 26px}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-@media (max-width:860px){.cards{grid-template-columns:minmax(0,1fr)}}
-.card{display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;background:var(--sheet);border-radius:18px;box-shadow:var(--shadow);padding:22px;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--c)}
-.card:hover{transform:translateY(-3px);box-shadow:0 0 0 2px var(--c),var(--shadow)}
-.card:focus-visible{outline:3px solid var(--c);outline-offset:3px}
-.ico{width:52px;height:52px;display:grid;place-items:center;color:#fff;background:var(--c);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
-.ico svg{width:26px;height:26px}
-.card h2{font-family:var(--f-display);font-weight:700;font-size:26px;letter-spacing:.03em;text-transform:uppercase;margin:4px 0 0}
-.card p{margin:0;color:var(--muted)}
-.card .go{margin-top:auto;padding-top:8px;font-family:var(--f-display);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
-/* login */
-.gate{display:flex;justify-content:center;padding-top:8px}
-.gate[hidden],[hidden]{display:none!important}
-.gate-card{width:100%;max-width:420px;background:var(--sheet);border-radius:18px;padding:26px 22px 22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:16px}
-.gate h2{font-family:var(--f-display);font-size:26px;text-transform:uppercase;margin:0}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--grey);padding:4px;border-radius:12px}
-.tabs button{border:0;border-radius:9px;background:transparent;padding:10px 8px;font:600 15px var(--f-body);color:var(--ink);cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--sheet);color:var(--red);box-shadow:0 1px 4px rgba(0,0,0,.15)}
-form{display:flex;flex-direction:column;gap:12px}
-label{display:flex;flex-direction:column;gap:5px;font-family:var(--f-display);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase}
-input{font:400 17px var(--f-body);padding:12px;border:1.5px solid var(--rule);border-radius:10px;background:var(--sheet);color:var(--ink)}
-input:focus{border-color:var(--red);outline:none}
-.primary{border:0;border-radius:10px;padding:14px;font:700 16px var(--f-display);letter-spacing:.12em;text-transform:uppercase;color:#fff;background:linear-gradient(180deg,#e21b38,#b70f28);cursor:pointer}
+html,body{margin:0}
+body{min-height:100vh;background:
+   radial-gradient(900px 520px at 50% -160px,rgba(200,16,46,.28),transparent 70%),
+   radial-gradient(700px 500px at 100% 100%,rgba(212,166,58,.10),transparent 70%),
+   radial-gradient(600px 500px at 0% 70%,rgba(212,166,58,.07),transparent 70%),
+   var(--bg);
+  color:var(--fg);font:16px/1.5 var(--f-body);overflow-x:hidden}
+/* grano */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.09;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .9  0 0 0 0 .7  0 0 0 .9 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>")}
+/* franja de peligro arriba */
+.hazard{height:8px;background:repeating-linear-gradient(-45deg,var(--gold) 0 10px,#0b0907 10px 20px);border-bottom:1px solid #000;position:relative;z-index:2}
+.wrap{max-width:1140px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
+[hidden]{display:none!important}
+
+/* barra superior (solo dentro) */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px;border-bottom:1px solid var(--line2)}
+.mini{display:flex;align-items:center;gap:10px;font:700 15px var(--f-goth);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.mini svg{width:34px;height:34px}
+.who{display:flex;align-items:center;gap:14px;font-weight:500;color:var(--muted)}
+.who b{color:var(--fg);font-weight:600}
+.who span{white-space:nowrap}
+@media (max-width:480px){.mini{font-size:0;gap:0}.mini svg{width:38px;height:38px}}
+.who button{all:unset;cursor:pointer;color:var(--gold);font:700 13px var(--f-display);letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border:1px solid var(--line);border-radius:2px}
+.who button:hover{border-color:var(--gold)}
+
+/* emblema */
+.crest{color:var(--gold);filter:drop-shadow(0 0 22px rgba(212,166,58,.35))}
+.crest .ring{transform-origin:50% 50%;animation:spin 80s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* portada (login) */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center;min-height:calc(100vh - 8px);padding-block:40px}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr);gap:28px;min-height:0;padding-block:28px 48px}}
+.intro{display:flex;flex-direction:column;gap:18px}
+.intro .crest{width:120px;height:120px}
+@media (max-width:900px){.intro{align-items:center;text-align:center}.intro .crest{width:92px;height:92px}}
+.team{display:inline-flex;align-items:center;gap:12px;font:700 13px var(--f-display);letter-spacing:.32em;text-transform:uppercase;color:var(--gold2)}
+.team::before,.team::after{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.team::after{transform:scaleX(-1)}
+.title{margin:0;font-family:var(--f-deco);font-weight:900;font-size:clamp(34px,4.7vw,60px);line-height:1.02;letter-spacing:.01em;text-transform:uppercase;
+  background:linear-gradient(180deg,#fff3cf 0%,#f3d27a 42%,#b07d22 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.6)) drop-shadow(0 0 28px rgba(212,166,58,.18))}
+.title span{display:block;font-size:.54em;letter-spacing:.18em;color:transparent}
+.brandname{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brandname strong{font:900 clamp(22px,3vw,30px)/1 var(--f-goth);letter-spacing:.2em;text-transform:uppercase;color:#fff;background:linear-gradient(180deg,var(--red),var(--red2));padding:10px 16px 9px;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);box-shadow:0 10px 30px -10px rgba(200,16,46,.8)}
+.brandname small{font:600 13px var(--f-display);letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.tag{margin:0;color:var(--muted);max-width:46ch;font-size:17px}
+.tools{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:900px){.tools,.brandname{justify-content:center}}
+.tools span{display:inline-flex;align-items:center;gap:8px;font:700 13px var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--fg);padding:7px 12px;border:1px solid var(--line);background:rgba(20,16,12,.7);border-radius:2px}
+.tools svg{width:16px;height:16px;color:var(--gold)}
+
+/* tarjeta de entrada: placa con esquinas de oro */
+.plate{position:relative;background:linear-gradient(180deg,#1d1710,var(--panel) 140px);border:1px solid var(--line);border-radius:2px;padding:28px 24px 24px;box-shadow:0 30px 80px -30px #000,0 0 0 1px #000}
+.plate::before{content:"";position:absolute;inset:6px;border:1px solid rgba(212,166,58,.16);pointer-events:none}
+.plate::after{content:"";position:absolute;inset:-1px;pointer-events:none;background:
+ linear-gradient(var(--gold),var(--gold)) top left/22px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top left/2px 22px no-repeat,
+ linear-gradient(var(--gold),var(--gold)) top right/22px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top right/2px 22px no-repeat,
+ linear-gradient(var(--gold),var(--gold)) bottom left/22px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom left/2px 22px no-repeat,
+ linear-gradient(var(--gold),var(--gold)) bottom right/22px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/2px 22px no-repeat}
+.plate h2{margin:0 0 4px;font:700 22px var(--f-goth);letter-spacing:.1em;text-transform:uppercase;color:var(--gold2)}
+.plate .sub{margin:0 0 18px;color:var(--muted);font-size:14px}
+.gate-in{display:flex;flex-direction:column;gap:16px;position:relative;z-index:1}
+.tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
+.tabs button{border:0;background:transparent;padding:12px 8px;font:700 15px var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:linear-gradient(180deg,#2a2013,#1c160f);color:var(--gold2);box-shadow:inset 0 -2px 0 var(--gold)}
+form{display:flex;flex-direction:column;gap:14px}
+label{display:flex;flex-direction:column;gap:6px;font:700 13px var(--f-display);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+input{font:400 17px var(--f-body);padding:13px 12px;border:1px solid var(--line);border-radius:2px;background:#0b0907;color:var(--fg)}
+input::placeholder{color:#6f6553}
+input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,166,58,.18)}
+.primary{border:0;padding:15px;font:700 17px var(--f-display);letter-spacing:.2em;text-transform:uppercase;color:#fff;cursor:pointer;
+  background:linear-gradient(180deg,#e0213e,#8f0a1f);clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%);
+  box-shadow:0 10px 30px -10px rgba(200,16,46,.8);transition:filter .15s}
+.primary:hover{filter:brightness(1.12)}
 .primary:disabled{opacity:.6;cursor:default}
-.ghost{border:0;background:transparent;color:var(--red);font:600 15px var(--f-body);cursor:pointer;padding:4px}
-.msg{min-height:1.4em;margin:0;font-size:14px;color:var(--red)}
+.ghost{border:0;background:transparent;color:var(--gold);font:600 15px var(--f-body);cursor:pointer;padding:4px}
+.ghost:hover{text-decoration:underline}
+.msg{min-height:1.4em;margin:0;font-size:14px;color:#ff7a86}
+
+/* dentro: elegir herramienta */
+.hubhead{display:flex;align-items:center;gap:22px;padding-block:36px 26px}
+.hubhead .crest{width:96px;height:96px;flex:none}
+.hubhead .title{font-size:clamp(32px,5vw,58px)}
+.hubhead p{margin:8px 0 0;color:var(--muted);font-size:17px}
+.hubhead p b{color:var(--gold2);font-weight:600}
+@media (max-width:640px){.hubhead{flex-direction:column;text-align:center;gap:14px;padding-block:26px 18px}.hubhead .crest{width:76px;height:76px}.hubhead .team{justify-content:center}}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding-bottom:28px}
+@media (max-width:900px){.cards{grid-template-columns:minmax(0,1fr)}}
+.card{--c:var(--gold);position:relative;display:flex;flex-direction:column;gap:12px;min-height:330px;padding:26px 24px 22px;text-decoration:none;color:var(--fg);overflow:hidden;
+  background:radial-gradient(420px 260px at 100% 0,color-mix(in srgb,var(--c) 34%,transparent),transparent 70%),linear-gradient(180deg,#1b150f,#100c09);
+  border:1px solid var(--line);border-radius:2px;box-shadow:0 24px 60px -30px #000;transition:transform .2s,border-color .2s,box-shadow .2s}
+.card::before{content:"";position:absolute;inset:6px;border:1px solid color-mix(in srgb,var(--c) 30%,transparent);pointer-events:none}
+.card:hover{transform:translateY(-4px);border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 30px 70px -30px color-mix(in srgb,var(--c) 70%,#000)}
+.card:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}
+.card .art{position:absolute;right:-30px;bottom:-30px;width:190px;height:190px;color:var(--c);opacity:.11;transition:opacity .2s,transform .3s}
+.card:hover .art{opacity:.3;transform:rotate(-6deg) scale(1.05)}
+.num{font:900 14px var(--f-goth);letter-spacing:.3em;color:var(--c)}
+.ico{width:62px;height:62px;display:grid;place-items:center;color:#fff;background:linear-gradient(160deg,var(--c),color-mix(in srgb,var(--c) 45%,#000));clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);box-shadow:0 0 0 2px var(--gold)}
+.ico svg{width:30px;height:30px}
+.card h3{margin:2px 0 0;font:700 25px/1.1 var(--f-goth);letter-spacing:.06em;text-transform:uppercase;color:#fff}
+.card p{margin:0;color:var(--muted);max-width:30ch;position:relative}
+.card .go{margin-top:auto;display:inline-flex;align-items:center;gap:10px;font:700 15px var(--f-display);letter-spacing:.2em;text-transform:uppercase;color:var(--c);position:relative}
+.card .go i{font-style:normal;transition:transform .2s}
+.card:hover .go i{transform:translateX(6px)}
+
+/* franja del equipo */
+.roster{border-top:1px solid var(--line2);padding-block:22px 40px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+.roster .team{font-size:12px}
+.armies{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.army{display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border:1px solid var(--line);background:rgba(20,16,12,.8);font:600 14px var(--f-display);letter-spacing:.06em;color:var(--fg)}
+.army img{width:44px;height:26px;object-fit:cover;display:block;filter:saturate(1.1)}
+.intro .armies{justify-content:flex-start}
+@media (max-width:900px){.intro .armies{justify-content:center}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header class="bar"><div class="wrap">
-  <div class="brand"><svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 2 L40 9 V22 C40 32 32 39.5 22 42 C12 39.5 4 32 4 22 V9 Z" fill="#d01530"/><path d="M22 8 V36 M12 17 H32" stroke="#fff" stroke-width="4"/><circle cx="22" cy="17" r="4.5" fill="#141414" stroke="#fff" stroke-width="2"/></svg>
-    <div><div class="t">Warhammelgas <em>40k</em></div><small>Calculadora · Matrices · Diario de guerra</small></div></div>
-  <div class="who" id="who" hidden><span id="whoName"></span><button type="button" id="logout">Salir</button></div>
-</div></header>
+<div class="hazard" aria-hidden="true"></div>
 
-<main class="wrap">
-  <section class="gate" id="gate">
-    <div class="gate-card" id="gateCard"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="crest" viewBox="0 0 100 100">
+    <g class="ring"><circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="7" stroke-dasharray="6.6 5.6"/></g>
+    <circle cx="50" cy="50" r="37" fill="#0b0907" stroke="currentColor" stroke-width="2.5"/>
+    <circle cx="50" cy="50" r="32" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
+    <text x="50" y="66" text-anchor="middle" font-family="Cinzel Decorative, Cinzel, Georgia, serif" font-weight="900" font-size="44" fill="currentColor">W</text>
+  </symbol>
+</svg>
+
+<header class="wrap top" id="topbar" hidden>
+  <div class="mini"><svg class="crest"><use href="#crest"/></svg>Warhammelgas</div>
+  <div class="who"><span>Hola, <b id="whoName"></b></span><button type="button" id="logout">Salir</button></div>
+</header>
+
+<main>
+  <!-- Portada con el inicio de sesión -->
+  <section class="wrap hero" id="gate">
+    <div class="intro">
+      <svg class="crest" aria-hidden="true"><use href="#crest"/></svg>
+      <div class="team">Equipo de Talavera</div>
+      <h1 class="title">Herramientas<span>de Guerra</span></h1>
+      <div class="brandname"><strong>Warhammelgas</strong><small>Warhammer 40.000</small></div>
+      <p class="tag">El arsenal del equipo: calcula el daño, prepara los emparejamientos y lleva el registro de cada batalla. Una sola cuenta para todo.</p>
+      <div class="tools">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor"/></svg>Calculadora</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>Matrices</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-6"/></svg>Diario de guerra</span>
+      </div>
+    </div>
+    <div class="plate"><div class="gate-in" id="gateCard"></div></div>
   </section>
 
+  <!-- Dentro: elegir herramienta -->
   <section id="hub" hidden>
-    <h1 id="hola">Elige herramienta</h1>
-    <p class="lead">Ya has entrado: las tres páginas usan esta misma sesión.</p>
-    <div class="cards">
-      <a class="card" href="calculadora.html" style="--c:#2a6fdb">
-        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.4" fill="currentColor"/></svg></span>
-        <h2>Calculadora de daño</h2>
-        <p>Matriz de duelos: atacante contra defensor, con tus listas guardadas.</p>
-        <span class="go">Abrir &rarr;</span>
-      </a>
-      <a class="card" href="matrices.html" style="--c:#8a2a1e">
-        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span>
-        <h2>Matrices de equipo</h2>
-        <p>Emparejamientos contra los equipos rivales, mapas y modo torneo.</p>
-        <span class="go">Abrir &rarr;</span>
-      </a>
-      <a class="card" href="index.html#panel" style="--c:#d01530">
-        <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-6"/></svg></span>
-        <h2>Diario de guerra</h2>
-        <p>Historial de tus partidas y estadísticas.</p>
-        <span class="go">Abrir &rarr;</span>
-      </a>
+    <div class="wrap">
+      <div class="hubhead">
+        <svg class="crest" aria-hidden="true"><use href="#crest"/></svg>
+        <div>
+          <div class="team">Warhammelgas · Talavera</div>
+          <h1 class="title">Herramientas de Guerra</h1>
+          <p id="hola">Elige tu herramienta. Ya has entrado y las tres usan tu misma cuenta.</p>
+        </div>
+      </div>
+      <div class="cards">
+        <a class="card" href="calculadora.html" style="--c:#3b8fe8">
+          <svg class="art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/><circle cx="16" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="16" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+          <span class="num">I</span>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg></span>
+          <h3>Calculadora de daño</h3>
+          <p>La matriz de duelos: atacante contra defensor, con tus listas guardadas.</p>
+          <span class="go">Entrar <i>&rarr;</i></span>
+        </a>
+        <a class="card" href="matrices.html" style="--c:#d4a63a">
+          <svg class="art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+          <span class="num">II</span>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span>
+          <h3>Matrices de equipo</h3>
+          <p>Emparejamientos contra los equipos rivales, mapas y modo torneo.</p>
+          <span class="go">Entrar <i>&rarr;</i></span>
+        </a>
+        <a class="card" href="index.html#panel" style="--c:#e0233f">
+          <svg class="art" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M12 2 20 5v7c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5z"/><path d="M12 6v12M8 10h8"/></svg>
+          <span class="num">III</span>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-6"/></svg></span>
+          <h3>Diario de guerra</h3>
+          <p>El historial de tus partidas y tus estadísticas.</p>
+          <span class="go">Entrar <i>&rarr;</i></span>
+        </a>
+      </div>
     </div>
   </section>
+
+  <footer class="wrap roster">
+    <div class="team">Los ejércitos de Warhammelgas</div>
+    <div class="armies">
+      <span class="army"><img src="img/facciones/Grey_Knights.jpg" alt="">Caballeros Grises</span>
+      <span class="army"><img src="img/facciones/Adeptus_Custodes.jpg" alt="">Adeptus Custodes</span>
+      <span class="army"><img src="img/facciones/Orks.jpg" alt="">Orkos</span>
+      <span class="army"><img src="img/facciones/Tyranids.jpg" alt="">Tiránidos</span>
+      <span class="army"><img src="img/facciones/Space_Wolves.jpg" alt="">Lobos Espaciales</span>
+      <span class="army"><img src="img/facciones/Astra_Militarum.jpg" alt="">Astra Militarum</span>
+    </div>
+  </footer>
 </main>
 
 <script src="vendor/supabase.js"></script>
@@ -128,7 +254,8 @@ input:focus{border-color:var(--red);outline:none}
     mode = m || "login";
     var reg = mode === "signup", reset = mode === "reset", newpw = mode === "newpw";
     $("gateCard").innerHTML =
-      (newpw ? '<h2>Nueva contraseña</h2>' : reset ? '<h2>Recuperar contraseña</h2><p style="margin:0;color:var(--muted)">Te enviaremos un correo con un enlace para poner una contraseña nueva.</p>' :
+      (newpw ? '<div><h2>Nueva contraseña</h2></div>' : reset ? '<div><h2>Recuperar contraseña</h2><p class="sub">Te enviaremos un correo con un enlace para poner una contraseña nueva.</p></div>' :
+        '<div><h2>' + (reg ? 'Alístate' : 'Identifícate') + '</h2><p class="sub">' + (reg ? 'Crea tu cuenta de Warhammelgas.' : 'Entra con tu cuenta de Warhammelgas (la misma del Diario de guerra).') + '</p></div>' +
         '<div class="tabs" role="tablist"><button type="button" role="tab" data-m="login" aria-selected="' + !reg + '">Entrar</button><button type="button" role="tab" data-m="signup" aria-selected="' + reg + '">Crear cuenta</button></div>') +
       '<form id="f" novalidate>' +
       (reg ? '<label>Tu nombre de jugador<input id="gName" autocomplete="nickname" maxlength="40" placeholder="Por ejemplo, Miquel"></label>' : '') +
@@ -140,7 +267,7 @@ input:focus{border-color:var(--red);outline:none}
       (reset ? '<button type="button" class="ghost" data-m="login">Volver</button>' : '') +
       '</form>';
     if(msg) $("msg").textContent = msg;
-    $("gate").hidden = false; $("hub").hidden = true; $("who").hidden = true;
+    $("gate").hidden = false; $("hub").hidden = true; $("topbar").hidden = true;
   }
 
   document.addEventListener("click", function(e){ var b = e.target.closest("[data-m]"); if(b) gate(b.dataset.m); });
@@ -168,9 +295,11 @@ input:focus{border-color:var(--red);outline:none}
   function entrar(session){
     var dest = volver();
     if(dest){ location.replace(dest); return; }
-    $("gate").hidden = true; $("hub").hidden = false; $("who").hidden = false;
+    $("gate").hidden = true; $("hub").hidden = false; $("topbar").hidden = false;
     var n = DGSesion.nombre(session.user);
-    $("whoName").textContent = n; $("hola").textContent = "Hola, " + n + ". Elige herramienta";
+    $("whoName").textContent = n;
+    $("hola").innerHTML = "Bienvenido, <b></b>. Elige tu herramienta: las tres usan tu misma cuenta.";
+    $("hola").querySelector("b").textContent = n;
   }
 
   $("logout").onclick = async function(){ await sb.auth.signOut(); };
