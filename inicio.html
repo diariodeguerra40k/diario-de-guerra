@@ -11,7 +11,7 @@
 <style>
 /* Grimdark: negro cálido, oro viejo y rojo sangre. Mismo aspecto en claro y oscuro a propósito (es una portada). */
 :root{
-  --bg:#0b0907; --bg2:#15100b; --panel:#14100c; --panel2:#1c1610; --line:#3d301d; --line2:#2a2115;
+  --bg:#0b0907; --deep:#070504; --glow:rgba(200,16,46,.28); --panel:#14100c; --panel2:#1c1610; --line:#3d301d; --line2:#2a2115;
   --fg:#f1e9d6; --muted:#b0a48b; --gold:#d4a63a; --gold2:#f3d27a; --red:#c8102e; --red2:#7d0a1c;
   --f-goth:"Cinzel",Georgia,serif; --f-deco:"Cinzel Decorative","Cinzel",Georgia,serif;
   --f-display:"Barlow Condensed","Arial Narrow",sans-serif; --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -22,7 +22,7 @@
 *{box-sizing:border-box}
 html,body{margin:0}
 body{min-height:100vh;background:
-   radial-gradient(900px 520px at 50% -160px,rgba(200,16,46,.28),transparent 70%),
+   radial-gradient(900px 520px at 50% -160px,var(--glow),transparent 70%),
    radial-gradient(700px 500px at 100% 100%,rgba(212,166,58,.10),transparent 70%),
    radial-gradient(600px 500px at 0% 70%,rgba(212,166,58,.07),transparent 70%),
    var(--bg);
@@ -31,9 +31,17 @@ body{min-height:100vh;background:
 body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.09;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .9  0 0 0 0 .7  0 0 0 .9 0'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>")}
 /* franja de peligro arriba */
-.hazard{height:8px;background:repeating-linear-gradient(-45deg,var(--gold) 0 10px,#0b0907 10px 20px);border-bottom:1px solid #000;position:relative;z-index:2}
+.hazard{height:8px;background:repeating-linear-gradient(-45deg,var(--gold) 0 10px,var(--deep) 10px 20px);border-bottom:1px solid #000;position:relative;z-index:2}
 .wrap{max-width:1140px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
 [hidden]{display:none!important}
+
+/* Paletas: oscuras pero con color (se elige con data-pal en <html>) */
+html[data-pal="granate"]{--bg:#2a0d13;--deep:#1a070b;--glow:rgba(255,70,90,.30);--panel:#36111a;--panel2:#451622;--line:#6e2a36;--line2:#4f1c27;--muted:#cfa9ad}
+html[data-pal="ultramar"]{--bg:#0e1a33;--deep:#081122;--glow:rgba(90,150,255,.30);--panel:#14254a;--panel2:#1b3060;--line:#36508a;--line2:#243c6c;--muted:#a9b9d6;--red:#c8102e}
+html[data-pal="bosque"]{--bg:#12241b;--deep:#0a1610;--glow:rgba(120,200,140,.22);--panel:#183026;--panel2:#1f3d30;--line:#3d6250;--line2:#2a4a3b;--muted:#a9c2b3}
+html[data-pal="pizarra"]{--bg:#1d242c;--deep:#12171d;--glow:rgba(160,190,220,.20);--panel:#262f39;--panel2:#2f3a46;--line:#4c5b6b;--line2:#38444f;--muted:#aeb9c4}
+html[data-pal="caos"]{--bg:#221335;--deep:#150b22;--glow:rgba(200,110,255,.28);--panel:#2c1944;--panel2:#382056;--line:#5e3d85;--line2:#432a63;--muted:#c3afd8}
+html[data-pal="oxido"]{--bg:#2b1a0f;--deep:#1b0f08;--glow:rgba(255,140,60,.26);--panel:#372214;--panel2:#452b19;--line:#73492c;--line2:#55361f;--muted:#d1b59c}
 
 /* barra superior (solo dentro) */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px;border-bottom:1px solid var(--line2)}
@@ -70,11 +78,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .tag{margin:0;color:var(--muted);max-width:46ch;font-size:17px}
 .tools{display:flex;gap:10px;flex-wrap:wrap}
 @media (max-width:900px){.tools,.brandname{justify-content:center}}
-.tools span{display:inline-flex;align-items:center;gap:8px;font:700 13px var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--fg);padding:7px 12px;border:1px solid var(--line);background:rgba(20,16,12,.7);border-radius:2px}
+.tools span{display:inline-flex;align-items:center;gap:8px;font:700 13px var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--fg);padding:7px 12px;border:1px solid var(--line);background:color-mix(in srgb,var(--panel) 75%,transparent);border-radius:2px}
 .tools svg{width:16px;height:16px;color:var(--gold)}
 
 /* tarjeta de entrada: placa con esquinas de oro */
-.plate{position:relative;background:linear-gradient(180deg,#1d1710,var(--panel) 140px);border:1px solid var(--line);border-radius:2px;padding:28px 24px 24px;box-shadow:0 30px 80px -30px #000,0 0 0 1px #000}
+.plate{position:relative;background:linear-gradient(180deg,var(--panel2),var(--panel) 140px);border:1px solid var(--line);border-radius:2px;padding:28px 24px 24px;box-shadow:0 30px 80px -30px #000,0 0 0 1px #000}
 .plate::before{content:"";position:absolute;inset:6px;border:1px solid rgba(212,166,58,.16);pointer-events:none}
 .plate::after{content:"";position:absolute;inset:-1px;pointer-events:none;background:
  linear-gradient(var(--gold),var(--gold)) top left/22px 2px no-repeat,linear-gradient(var(--gold),var(--gold)) top left/2px 22px no-repeat,
@@ -86,10 +94,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .gate-in{display:flex;flex-direction:column;gap:16px;position:relative;z-index:1}
 .tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
 .tabs button{border:0;background:transparent;padding:12px 8px;font:700 15px var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);cursor:pointer}
-.tabs button[aria-selected="true"]{background:linear-gradient(180deg,#2a2013,#1c160f);color:var(--gold2);box-shadow:inset 0 -2px 0 var(--gold)}
+.tabs button[aria-selected="true"]{background:linear-gradient(180deg,var(--line2),var(--panel2));color:var(--gold2);box-shadow:inset 0 -2px 0 var(--gold)}
 form{display:flex;flex-direction:column;gap:14px}
 label{display:flex;flex-direction:column;gap:6px;font:700 13px var(--f-display);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-input{font:400 17px var(--f-body);padding:13px 12px;border:1px solid var(--line);border-radius:2px;background:#0b0907;color:var(--fg)}
+input{font:400 17px var(--f-body);padding:13px 12px;border:1px solid var(--line);border-radius:2px;background:var(--deep);color:var(--fg)}
 input::placeholder{color:#6f6553}
 input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,166,58,.18)}
 .primary{border:0;padding:15px;font:700 17px var(--f-display);letter-spacing:.2em;text-transform:uppercase;color:#fff;cursor:pointer;
@@ -111,7 +119,7 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,
 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;padding-bottom:28px}
 @media (max-width:900px){.cards{grid-template-columns:minmax(0,1fr)}}
 .card{--c:var(--gold);position:relative;display:flex;flex-direction:column;gap:12px;min-height:330px;padding:26px 24px 22px;text-decoration:none;color:var(--fg);overflow:hidden;
-  background:radial-gradient(420px 260px at 100% 0,color-mix(in srgb,var(--c) 34%,transparent),transparent 70%),linear-gradient(180deg,#1b150f,#100c09);
+  background:radial-gradient(420px 260px at 100% 0,color-mix(in srgb,var(--c) 34%,transparent),transparent 70%),linear-gradient(180deg,var(--panel2),var(--panel));
   border:1px solid var(--line);border-radius:2px;box-shadow:0 24px 60px -30px #000;transition:transform .2s,border-color .2s,box-shadow .2s}
 .card::before{content:"";position:absolute;inset:6px;border:1px solid color-mix(in srgb,var(--c) 30%,transparent);pointer-events:none}
 .card:hover{transform:translateY(-4px);border-color:var(--c);box-shadow:0 0 0 1px var(--c),0 30px 70px -30px color-mix(in srgb,var(--c) 70%,#000)}
@@ -128,13 +136,6 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,
 .card:hover .go i{transform:translateX(6px)}
 
 /* franja del equipo */
-.roster{border-top:1px solid var(--line2);padding-block:22px 40px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
-.roster .team{font-size:12px}
-.armies{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
-.army{display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border:1px solid var(--line);background:rgba(20,16,12,.8);font:600 14px var(--f-display);letter-spacing:.06em;color:var(--fg)}
-.army img{width:44px;height:26px;object-fit:cover;display:block;filter:saturate(1.1)}
-.intro .armies{justify-content:flex-start}
-@media (max-width:900px){.intro .armies{justify-content:center}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -144,7 +145,7 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="crest" viewBox="0 0 100 100">
     <g class="ring"><circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="7" stroke-dasharray="6.6 5.6"/></g>
-    <circle cx="50" cy="50" r="37" fill="#0b0907" stroke="currentColor" stroke-width="2.5"/>
+    <circle cx="50" cy="50" r="37" fill="var(--deep)" stroke="currentColor" stroke-width="2.5"/>
     <circle cx="50" cy="50" r="32" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
     <text x="50" y="66" text-anchor="middle" font-family="Cinzel Decorative, Cinzel, Georgia, serif" font-weight="900" font-size="44" fill="currentColor">W</text>
   </symbol>
@@ -160,9 +161,9 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,
   <section class="wrap hero" id="gate">
     <div class="intro">
       <svg class="crest" aria-hidden="true"><use href="#crest"/></svg>
-      <div class="team">Equipo de Talavera</div>
+      <div class="team">Warhammer 40.000</div>
       <h1 class="title">Herramientas<span>de Guerra</span></h1>
-      <div class="brandname"><strong>Warhammelgas</strong><small>Warhammer 40.000</small></div>
+      <div class="brandname"><strong>Warhammelgas</strong></div>
       <p class="tag">El arsenal del equipo: calcula el daño, prepara los emparejamientos y lleva el registro de cada batalla. Una sola cuenta para todo.</p>
       <div class="tools">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor"/></svg>Calculadora</span>
@@ -179,7 +180,7 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,
       <div class="hubhead">
         <svg class="crest" aria-hidden="true"><use href="#crest"/></svg>
         <div>
-          <div class="team">Warhammelgas · Talavera</div>
+          <div class="team">Warhammelgas</div>
           <h1 class="title">Herramientas de Guerra</h1>
           <p id="hola">Elige tu herramienta. Ya has entrado y las tres usan tu misma cuenta.</p>
         </div>
@@ -213,17 +214,6 @@ input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,
     </div>
   </section>
 
-  <footer class="wrap roster">
-    <div class="team">Los ejércitos de Warhammelgas</div>
-    <div class="armies">
-      <span class="army"><img src="img/facciones/Grey_Knights.jpg" alt="">Caballeros Grises</span>
-      <span class="army"><img src="img/facciones/Adeptus_Custodes.jpg" alt="">Adeptus Custodes</span>
-      <span class="army"><img src="img/facciones/Orks.jpg" alt="">Orkos</span>
-      <span class="army"><img src="img/facciones/Tyranids.jpg" alt="">Tiránidos</span>
-      <span class="army"><img src="img/facciones/Space_Wolves.jpg" alt="">Lobos Espaciales</span>
-      <span class="army"><img src="img/facciones/Astra_Militarum.jpg" alt="">Astra Militarum</span>
-    </div>
-  </footer>
 </main>
 
 <script src="vendor/supabase.js"></script>
